@@ -1,0 +1,84 @@
+.ink-lines { fill: none; stroke: #272727; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+.ink-scene { display: block; overflow: visible; }
+.scene-wash { transform-origin: 150px 157px; animation: wash-breathe 8s ease-in-out infinite; }
+.knot-thread { stroke-width: 3; }
+.knot-first { transform-origin: 150px 150px; animation: knot-first 7.2s ease-in-out infinite; }
+.knot-second { transform-origin: 150px 150px; animation: knot-second 7.2s ease-in-out infinite; }
+.knot-held { animation: knot-held 7.2s ease-in-out infinite; }
+.water-current { animation: water-drift 7s ease-in-out infinite; }
+.water-two { animation-direction: reverse; }
+.boat-rock { transform-origin: 150px 177px; animation: boat-rock 7s ease-in-out infinite; }
+.reed-soft { transform-origin: 119px 235px; animation: reed-soft 6.8s ease-in-out infinite; }
+.reed-firm { transform-origin: 191px 235px; animation: reed-firm 6.8s ease-in-out infinite; }
+.wind-line { animation: wind-pass 6.8s ease-in-out infinite; }
+.mycelium-old { animation: links-old 8s ease-in-out infinite; }
+.mycelium-new { animation: links-new 8s ease-in-out infinite; }
+.mycelium-base { animation: links-breathe 8s ease-in-out infinite; }
+.seed-root { stroke-dasharray: 95; stroke-dashoffset: 95; animation: root-arrival 8s ease-in-out infinite; }
+.soil-wash { animation: soil-breathe 8s ease-in-out infinite; }
+.soil-specks { animation: soil-shift 8s ease-in-out infinite; }
+.seed-water { animation: water-arrival 8s ease-in-out infinite; }
+.cage-door { transform-origin: 209px 168px; animation: door-opening 8s ease-in-out infinite; }
+.outside-light { animation: light-changing 8s ease-in-out infinite; }
+.cage-bird { transform-origin: 126px 176px; animation: bird-breathe 8s ease-in-out infinite; }
+.lighthouse-light { transform-origin: 112px 105px; animation: beam-sweep 8s ease-in-out infinite; }
+.light-coast { animation: coast-reveal 8s ease-in-out infinite; }
+.light-sail { animation: sail-reveal 8s ease-in-out infinite; }
+.light-rock { animation: rock-reveal 8s ease-in-out infinite; }
+.river-flow { stroke-dasharray: 29 7 6 10; animation: river-current 7s linear infinite; }
+.river-second { animation-direction: reverse; }
+.river-swirl { transform-origin: 148px 148px; animation: swirl 7s linear infinite; }
+.circle-first { animation: circle-first 7.6s ease-in-out infinite; }
+.circle-second { animation: circle-second 7.6s ease-in-out infinite; }
+.clay-left { animation: clay-left 8s ease-in-out infinite; }
+.clay-right { animation: clay-right 8s ease-in-out infinite; }
+.crack-glow { animation: crack-light 8s ease-in-out infinite; }
+.feather-drift { transform-origin: 150px 150px; animation: feather-drift 7.6s ease-in-out infinite; }
+.stone-bottom { transform-origin: 150px 238px; animation: stone-bottom 7.4s ease-in-out infinite; }
+.stone-middle { transform-origin: 150px 194px; animation: stone-middle 7.4s ease-in-out infinite; }
+.stone-top { transform-origin: 153px 140px; animation: stone-top 7.4s ease-in-out infinite; }
+.ink-scene.is-still * { animation: none !important; }
+.ink-scene.is-paused * { animation-play-state: paused !important; }
+.ink-scene.is-still .mycelium-new { opacity: .65; }
+.ink-scene.is-still .mycelium-old { opacity: .4; }
+.ink-scene.is-still .seed-root { stroke-dashoffset: 38; opacity: .8; }
+.ink-scene.is-still .cage-door { transform: scaleX(-.65); }
+.ink-scene.is-still .light-sail { opacity: .55; }
+.ink-scene.is-still .light-rock, .ink-scene.is-still .light-coast { opacity: .15; }
+
+@keyframes wash-breathe { 0%, 100% { opacity: .75; transform: scale(.98); } 50% { opacity: 1; transform: scale(1.03); } }
+@keyframes knot-first { 0%, 100% { transform: translate(-3px, 1px) rotate(-3deg) scaleX(1.035); } 50% { transform: translate(3px, -1px) rotate(3deg) scaleX(.96); } }
+@keyframes knot-second { 0%, 100% { transform: translate(3px, -1px) rotate(3deg) scaleX(1.035); } 50% { transform: translate(-3px, 1px) rotate(-3deg) scaleX(.96); } }
+@keyframes knot-held { 0%, 100% { opacity: .2; } 40%, 65% { opacity: .9; } }
+@keyframes water-drift { 0%, 100% { transform: translateX(-8px); } 50% { transform: translateX(8px); } }
+@keyframes boat-rock { 0%, 100% { transform: translate(0, -1px) rotate(-4deg); } 30% { transform: translate(5px, 2px) rotate(3deg); } 70% { transform: translate(-4px, 0) rotate(-1deg); } }
+@keyframes reed-soft { 0%, 100% { transform: skewX(-3deg) rotate(-2deg); } 45% { transform: skewX(-17deg) rotate(9deg); } 75% { transform: skewX(-9deg) rotate(4deg); } }
+@keyframes reed-firm { 0%, 100% { transform: rotate(0deg); } 40% { transform: rotate(2deg); } 50% { transform: rotate(1deg); } 61% { transform: rotate(2.4deg); } 75% { transform: rotate(.5deg); } }
+@keyframes wind-pass { 0%, 100% { transform: translateX(-10px); opacity: .2; } 50% { transform: translateX(10px); opacity: .7; } }
+@keyframes links-old { 0%, 100% { opacity: .9; } 55% { opacity: .08; } }
+@keyframes links-new { 0%, 100% { opacity: .12; } 55% { opacity: .9; } }
+@keyframes links-breathe { 0%, 100% { opacity: .65; } 50% { opacity: 1; } }
+@keyframes root-arrival { 0%, 100% { stroke-dashoffset: 95; opacity: .1; } 35% { stroke-dashoffset: 85; opacity: .5; } 68%, 82% { stroke-dashoffset: 18; opacity: .8; } }
+@keyframes soil-breathe { 0%, 100% { opacity: .6; } 55% { opacity: 1; } }
+@keyframes soil-shift { 0%, 100% { transform: translate(0, 0); } 55% { transform: translate(1px, 2px); } }
+@keyframes water-arrival { 0%, 100% { opacity: .35; transform: translateX(6px); } 50% { opacity: .85; transform: translateX(-6px); } }
+@keyframes door-opening { 0%, 100% { transform: scaleX(.96); } 48%, 78% { transform: scaleX(-.65); } }
+@keyframes light-changing { 0%, 100% { opacity: .25; } 40% { opacity: .9; } 75% { opacity: .35; } }
+@keyframes bird-breathe { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.025, 1.04); } }
+@keyframes beam-sweep { 0%, 100% { transform: rotate(-23deg); opacity: .55; } 50% { transform: rotate(32deg); opacity: 1; } }
+@keyframes coast-reveal { 0%, 100% { opacity: .8; } 35%, 70% { opacity: .08; } }
+@keyframes sail-reveal { 0%, 100% { opacity: .08; } 22%, 28%, 75%, 80% { opacity: .85; } 50% { opacity: .1; } }
+@keyframes rock-reveal { 0%, 100% { opacity: .08; } 45%, 60% { opacity: .9; } }
+@keyframes river-current { from { stroke-dashoffset: 0; } to { stroke-dashoffset: -104; } }
+@keyframes swirl { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+@keyframes circle-first { 0%, 100% { transform: translateX(-40px); } 50% { transform: translateX(18px); } }
+@keyframes circle-second { 0%, 100% { transform: translateX(40px); } 50% { transform: translateX(-18px); } }
+@keyframes clay-left { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(-2px); } }
+@keyframes clay-right { 0%, 100% { transform: translateX(0); } 50% { transform: translateX(2px); } }
+@keyframes crack-light { 0%, 100% { opacity: .18; } 50% { opacity: .9; } }
+@keyframes feather-drift { 0%, 100% { transform: translate(-8px, -5px) rotate(-10deg); } 30% { transform: translate(9px, 3px) rotate(11deg); } 63% { transform: translate(1px, 9px) rotate(-3deg); } 80% { transform: translate(-9px, 3px) rotate(-6deg); } }
+@keyframes stone-bottom { 0%, 100% { transform: translateX(0) rotate(0deg); } 45% { transform: translateX(2px) rotate(-1deg); } }
+@keyframes stone-middle { 0%, 100% { transform: translateX(0) rotate(0deg); } 55% { transform: translateX(-3px) rotate(3deg); } }
+@keyframes stone-top { 0%, 100% { transform: translateX(0) rotate(-1deg); } 35% { transform: translateX(3px) rotate(5deg); } 65% { transform: translateX(-2px) rotate(-3deg); } }
+
+@media (prefers-reduced-motion: reduce) { .ink-scene * { animation: none !important; } }

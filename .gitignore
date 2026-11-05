@@ -1,0 +1,13 @@
+node_modules/
+dist/
+.sites-runtime/
+*.tsbuildinfo
+*.log
+.DS_Store
+artifacts/
+qa-*.html
+.vercel/
+.env
+.env.*
+!.env.example
+.openai/
