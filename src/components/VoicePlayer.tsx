@@ -19,7 +19,7 @@ function voiceChunks(paragraphs: string[]): string[] {
   });
 }
 
-export function VoicePlayer({ readingId, paragraphs, audioSrc }: { readingId: string; paragraphs: string[]; audioSrc?: string }) {
+export function VoicePlayer({ readingId, paragraphs, audioSrc, onPlayingChange }: { readingId: string; paragraphs: string[]; audioSrc?: string; onPlayingChange?: (playing: boolean) => void }) {
   const [playing, setPlaying] = useState(false);
   const [supported, setSupported] = useState(() => 'speechSynthesis' in window && 'SpeechSynthesisUtterance' in window);
   const [error, setError] = useState('');
@@ -29,6 +29,11 @@ export function VoicePlayer({ readingId, paragraphs, audioSrc }: { readingId: st
   const speaking = useRef(false);
   const currentUtterance = useRef<SpeechSynthesisUtterance | null>(null);
   const voices = useRef<SpeechSynthesisVoice[]>([]);
+
+  useEffect(() => {
+    onPlayingChange?.(playing);
+    return () => { if (playing) onPlayingChange?.(false); };
+  }, [playing, onPlayingChange]);
 
   const stop = useCallback(() => {
     serial.current += 1;

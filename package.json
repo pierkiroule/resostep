@@ -1,13 +1,13 @@
 {
   "name": "le-pas-de-cote-resonant",
   "private": true,
-  "version": "2.0.0",
+  "version": "3.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build && node scripts/build-sw.mjs",
     "preview": "vite preview --host 0.0.0.0",
-    "check": "tsc -b && node scripts/check-content.mjs && node scripts/check-resonance.mjs",
+    "check": "tsc -b && node scripts/check-content.mjs && node scripts/check-resonance.mjs && node scripts/check-score.mjs",
     "check:pwa": "node scripts/check-pwa.mjs"
   },
   "dependencies": {

@@ -6,8 +6,8 @@ import { ArchetypeAnimation } from './ArchetypeAnimation';
 
 export type EmergencePhase = 'idle' | 'brewing' | 'revealed';
 
-export function ResonanceEmergence({ symbols, seed, phase, paused, reducedMotion, textOnly }: {
-  symbols: Archetype[];
+export function ResonanceEmergence({ archetype, seed, phase, paused, reducedMotion, textOnly }: {
+  archetype: Archetype;
   seed: number;
   phase: EmergencePhase;
   paused: boolean;
@@ -27,10 +27,10 @@ export function ResonanceEmergence({ symbols, seed, phase, paused, reducedMotion
         dy: -8 - random() * 17,
         opacity: .18 + random() * .5,
       })),
-      turns: symbols.map(() => (random() - .5) * 9),
+      turn: ['pierres', 'phare', 'cage', 'roseau'].includes(archetype.id) ? 0 : (random() - .5) * 2,
       motes: Array.from({ length: 13 }, () => ({ x: 35 + random() * 230, y: 30 + random() * 225, r: .6 + random() * 1.6 })),
     };
-  }, [seed, symbols]);
+  }, [seed, archetype.id]);
   if (textOnly) return null;
   return (
     <div key={seed} className={`resonance-emergence phase-${phase} ${paused ? 'is-paused' : ''} ${reducedMotion ? 'is-still' : ''}`} aria-hidden={phase !== 'revealed'}>
@@ -43,13 +43,13 @@ export function ResonanceEmergence({ symbols, seed, phase, paused, reducedMotion
           <circle cx={bubble.x} cy={bubble.y} r={bubble.radius} fill={i % 5 === 0 ? '#303030' : 'none'} stroke={i % 7 === 0 ? '#9aafa9' : '#555'} strokeWidth={i % 5 === 0 ? 0 : .65} opacity={bubble.opacity} />
         </g>)}
       </svg>}
-      {phase === 'revealed' && <div className={`fusion-art fusion-${symbols.length}`} role="img" aria-label={symbols.map(a => a.animationDescription).join(' ')}>
-        <svg viewBox="0 0 300 300" className="fusion-motes" aria-hidden="true">
+      {phase === 'revealed' && <div className="revealed-art" role="img" aria-label={archetype.animationDescription}>
+        <svg viewBox="0 0 300 300" className="scene-motes" aria-hidden="true">
           {composition.motes.map((mote, i) => <circle key={i} cx={mote.x} cy={mote.y} r={mote.r} fill={i % 3 === 0 ? '#b9a181' : '#758e91'} opacity=".24" />)}
         </svg>
-        {symbols.map((symbol, i) => <div key={symbol.id} className={`fusion-layer fusion-layer-${i}`} style={{ '--ink-turn': `${composition.turns[i]}deg` } as CSSProperties} aria-hidden="true">
-          <ArchetypeAnimation archetype={symbol} paused={paused} reducedMotion={reducedMotion} />
-        </div>)}
+        <div className="scene-layer" style={{ '--ink-turn': `${composition.turn}deg` } as CSSProperties} aria-hidden="true">
+          <ArchetypeAnimation archetype={archetype} paused={paused} reducedMotion={reducedMotion} seed={seed} />
+        </div>
       </div>}
     </div>
   );

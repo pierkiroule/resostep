@@ -1,8 +1,10 @@
 # Animations des douze archétypes
 
-Cette première version contient douze scènes SVG procédurales dans
+Les douze scènes d’encre et d’aquarelle sont générées en SVG dans
 `src/components/InkScenes.tsx`, animées par `src/styles/scenes.css`.
-Ce sont des animations de remplacement, pas les fichiers artistiques définitifs.
+Leurs palettes sont définies dans `src/data/artDirection.ts`. Le grain reste fixe ;
+les gestes, les courants, les pigments et les appuis bougent en boucles de huit secondes.
+Ces scènes procédurales sont remplaçables par des médias artistiques.
 
 Pour remplacer une scène, déposer ici sa vidéo puis renseigner `media` dans
 `src/data/archetypes.ts`. Exemple :

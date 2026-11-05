@@ -1,4 +1,4 @@
-type IconName = 'help' | 'type' | 'text' | 'sound' | 'stop' | 'up' | 'close' | 'pause' | 'play' | 'check' | 'arrow' | 'renew';
+type IconName = 'help' | 'type' | 'text' | 'sound' | 'stop' | 'up' | 'close' | 'pause' | 'play' | 'check' | 'arrow' | 'renew' | 'music';
 export function UiIcon({ name }: { name: IconName }) {
   const paths: Record<IconName, React.ReactNode> = {
     help: <><circle cx="12" cy="12" r="9" /><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-1 .4-1 1.2-1 2.2M12 17h.01" /></>,
@@ -13,6 +13,7 @@ export function UiIcon({ name }: { name: IconName }) {
     check: <path d="m5 12 4 4L19 6" />,
     arrow: <path d="M4 12h16m-6-6 6 6-6 6" />,
     renew: <><path d="M20 11a8 8 0 1 0-2 6M20 4v7h-7" /></>,
+    music: <><path d="M9 17V5l11-2v12M9 8l11-2" /><ellipse cx="6" cy="17" rx="3" ry="2.5" /><ellipse cx="17" cy="15" rx="3" ry="2.5" /></>,
   };
   return <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">{paths[name]}</svg>;
 }

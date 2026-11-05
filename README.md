@@ -2,29 +2,27 @@
 
 **Version flash métaphorique — Le pas de côté résonant !**
 
-Quand l’équipe se sent bloquée dans une situation complexe de pédopsychiatrie,
-un tirage d’un à trois symboles ouvre une autre façon de regarder. Les symboles
-se relient ; des bulles frémissent, une composition d’encre émerge et le disque
-se charge d’un halo aquarellé. Une inspiration et une question viennent soutenir
-l’échange. Un nouveau tirage renouvelle l’angle avec les mêmes symboles.
+Une équipe évoque une situation complexe de pédopsychiatrie. Un professionnel
+choisit **un seul symbole** sur le disque. Des bulles frémissent, l’image émerge
+et sa musique commence. Un texte bref relie une scène sensible à une expérience
+de l’équipe, puis propose une question pour déplacer le regard.
 
-L’application explore les résonances des professionnels. Elle n’interprète
-ni le jeune ni sa famille, n’analyse aucun récit clinique et ne recommande
-aucune conduite thérapeutique. Le texte est une proposition à associer, discuter
-ou écarter, jamais une explication de la situation.
+La consigne : **« Pour cette situation, quel symbole vous parle ? »**
+
+Le symbole n’explique pas le jeune ou sa famille. L’application n’analyse aucun
+récit clinique, ne pose pas de diagnostic et ne recommande aucune conduite
+thérapeutique. Les associations peuvent être discutées ou écartées.
 
 ## Installation
 
-Node.js **24.x** et npm. Aucun secret, serveur d’inférence ou
-compte applicatif n’est nécessaire.
+Node.js **24.x** et npm. Aucun secret, backend ou service d’IA.
 
 ```bash
 npm ci
 npm run dev
 ```
 
-Ouvrir l’URL affichée par Vite. Pour construire et vérifier la version de
-production :
+Pour vérifier et construire la version de production :
 
 ```bash
 npm run check
@@ -34,19 +32,14 @@ npm run preview
 ```
 
 `dist/` est un site statique autonome, à servir en HTTPS ou sur localhost.
-L’ouverture directe en `file://` ne suffit pas. Les chemins relatifs autorisent
-un hébergement à la racine ou dans un sous-répertoire.
+Les fichiers ne se lancent pas directement en `file://`. Les chemins relatifs
+permettent un hébergement à la racine ou dans un sous-répertoire.
 
 ## Déploiement Vercel
 
-Le dépôt est prêt à être importé dans Vercel. Aucune variable d’environnement
-ni base de données n’est nécessaire.
-
 1. Ouvrir [Vercel → New Project](https://vercel.com/new).
-2. Importer **pierkiroule/resostep** et garder la branche de production **main**.
-3. Garder la racine du dépôt comme Root Directory, puis cliquer sur **Deploy**.
-
-Les paramètres sont déjà définis dans `vercel.json` et `package.json` :
+2. Importer **pierkiroule/resostep**, branche de production **main**.
+3. Garder la racine du dépôt comme Root Directory et cliquer sur **Deploy**.
 
 | Paramètre | Valeur |
 | --- | --- |
@@ -57,180 +50,170 @@ Les paramètres sont déjà définis dans `vercel.json` et `package.json` :
 | Sortie | `dist` |
 | Variables d’environnement | Aucune |
 
-La construction vérifie les contenus, le moteur de variations et le cache PWA
-avant de livrer les fichiers statiques. Les en-têtes évitent de figer l’ancien
-service worker et l’ancienne page HTML ; les assets dont le nom contient un
-hash peuvent être conservés longtemps. L’application navigue par ancres
-(`#disque`, `#lecture`) : aucune réécriture de routes n’est nécessaire.
+`vercel.json` fixe ces paramètres et les règles de cache. Les fichiers HTML et
+le service worker sont revérifiés ; les assets dont le nom contient un hash
+peuvent être conservés longtemps. La navigation utilise `#disque` et `#lecture` ;
+aucune réécriture de route n’est nécessaire. L’intégration GitHub de Vercel peut
+redéployer les prochains commits sur `main`.
 
-Après la première publication, ouvrir l’URL HTTPS, attendre **Disponible hors
-ligne** dans l’aide, puis vérifier la réouverture en mode avion sur l’appareil.
-Les prochains commits sur `main` pourront être redéployés par l’intégration
-GitHub de Vercel. Ce dépôt ne contient aucun identifiant Vercel de projet ou
-d’équipe : ils seront créés lors de son import.
+## Un seul choix, à votre rythme
 
-Références : [configuration Vercel](https://vercel.com/docs/project-configuration/vercel-json)
-et [versions de Node.js](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions).
+- Toucher un symbole lance son image, sa musique et son inspiration.
+- Un autre symbole **remplace** le choix précédent.
+- Retoucher le symbole choisi ou **Un autre pas de côté** propose un nouvel angle.
+- La flèche circulaire renouvelle également le tirage ; aucun compte à rebours.
+- La pause visuelle fige la scène et son halo. Le bouton **Musique** coupe ou
+  reprend l’ambiance sonore indépendamment de l’animation.
 
-## Le rituel flash
+L’aide propose un rituel bref : déposer la situation, partager ses résonances,
+choisir une image, la rencontrer, laisser une question ouvrir l’échange, puis
+revenir à la situation. Ces étapes ne constituent pas un parcours obligatoire.
 
-1. Un professionnel évoque oralement la situation. Aucune saisie dans l’application.
-2. Chacun laisse venir ce que cela lui fait éprouver, imaginer et penser.
-3. Choisir un, deux ou trois glyphes, sans obligation de consensus.
-4. Après environ 2,2 secondes de frémissement, une composition et un angle émergent.
-5. Une question ouvre l’échange. Des associations contradictoires peuvent coexister.
-6. Revenir à la situation : qu’est-ce qui a changé dans notre manière de la regarder ?
+## Textes : une scène, un éclairage clinique, une question
 
-Toucher un symbole choisi le retire. Un quatrième remplace le plus ancien.
-La flèche circulaire et le bouton **Un autre pas de côté** renouvellent le tirage
-sans changer les symboles. Le bouton en bas du texte ramène le regard et le
-focus au disque. La durée du rituel reste libre : aucun compte à rebours.
+`src/data/resonance.ts` contient **96 perspectives réécrites**, huit par symbole.
+Chaque perspective comporte :
 
-## Le moteur de variété
+1. Une scène sensorielle simple : matière, poids, mouvement, lumière, souffle.
+2. Un lien avec une expérience professionnelle concrète : attentes, appuis,
+   responsabilités, désaccords, rythme du suivi, récit partagé ou fatigue.
+3. Deux questions possibles, dont une est présentée au tirage.
 
-`src/data/resonance.ts` contient :
+Les textes affichés font environ **86 à 111 mots**, invitation et question
+comprises. Ils visent une lecture brève, poétique et accessible. Les huit angles
+d’un symbole sont proposés avant le début d’un nouveau cycle ; le cycle suivant
+évite les derniers angles. Les identifiants récents restent en mémoire pendant
+la visite seulement. La variété est écrite et finie, puis renouvelée par les
+questions et les variantes visuelles et musicales.
 
-- **96 perspectives rédigées** : huit angles par symbole, centrés sur le cadre,
-  les temporalités, les mandats, les places, les appuis, les récits et les
-  résonances de l’équipe. Chacune possède deux questions possibles.
-- **66 rencontres spécifiques** : chaque paire de symboles possède un pont
-  métaphorique et une question propres.
-- Un moteur de composition pour les **298 sélections** possibles de un à trois
-  symboles. Le choix du point de vue principal, les échos des autres symboles,
-  la question et l’ouverture finale varient avec la graine du tirage.
-- Une mémoire temporaire des angles rencontrés. Dans un premier cycle avec
-  un seul symbole, ses huit angles sont proposés sans répétition. Quand le
-  répertoire disponible a été parcouru, un nouveau cycle évite les angles
-  les plus récents.
+Le moteur prend désormais **un objet `Archetype`**, et non une liste : aucun
+croisement automatique de plusieurs symboles. Les anciens textes longs restent
+dans `src/data/archetypes.ts` comme ressources éditoriales de référence.
 
-La variété est combinatoire, **pas infinie**. Les textes sont écrits et recomposés,
-sans modèle d’IA ni API. Ils ne sont pas ajustés à une situation que l’application
-ne connaît pas. Les 12 textes longs de la première version restent dans
-`src/data/archetypes.ts` comme ressources éditoriales de référence ; la version
-flash affiche les perspectives du nouveau moteur.
+## Douze animations d’encre et d’aquarelle
 
-Pour enrichir le répertoire, ajouter des perspectives à un symbole, en gardant
-le titre, le corps et les deux questions. Pour une rencontre, modifier sa clé
-normalisée dans `crossings`. Privilégier des écarts de lecture concrets sur
-l’expérience professionnelle, sans attribuer de motivations au patient ou à sa
-famille. Adapter le contrôle du nombre de perspectives si le répertoire grandit.
+Les scènes ont chacune leur palette de pigments, des contours d’encre et un
+grain fixe. Le grain ne change pas d’une image à l’autre pour éviter le bruit
+visuel. Les gestes et les flux suivent des boucles de huit secondes :
 
-## Visuels et personnalisation
+| Symbole | Mouvement |
+| --- | --- |
+| Le Nœud | Les fils changent réellement de courbe et dévoilent ce qu’ils tiennent. |
+| La Barque | La coque répond à deux courants, sur un paysage d’eau et de brume. |
+| Le Roseau | Deux tiges et leurs feuilles répondent différemment au même vent. |
+| Le Mycélium | Des chemins courbes se dessinent, s’atténuent et en rejoignent d’autres. |
+| La Graine | L’eau et la terre changent ; une racine fine apparaît. |
+| La Cage ouverte | La porte pivote, la lumière varie et l’oiseau reste sur son perchoir. |
+| Le Phare | Un faisceau tournant découvre des présences dans la brume. |
+| La Rivière | Deux flux colorés gardent leur mouvement autour d’un remous. |
+| Les Deux Cercles | Deux cercles d’encre se rapprochent et transforment leur espace commun. |
+| La Fissure | Les deux bords d’argile bougent légèrement autour d’une lumière. |
+| La Plume | Les barbes fines et le pigment flottent entre plusieurs souffles. |
+| Les Pierres | Trois formes minérales réorganisent doucement leurs appuis. |
 
-L’interface est noire et blanche. Les douze glyphes SVG ont une écriture d’encre
-commune. Seuls les pigments, certaines parties des scènes et le halo apportent
-de la couleur. Les options d’affichage restent dans l’aide.
+Les variations de détail sont déterministes à graine identique. Les deux
+filaments du Nœud utilisent l’interpolation CSS de chemins SVG ; les navigateurs
+plus anciens conservent des déplacements de repli. La cadence réelle dépend du
+matériel et n’est pas garantie à 60 images/s.
 
-Chaque tirage génère des positions de bulles, de petites particules, des
-inclinaisons, une palette de halo et une composition des scènes choisies.
-Les mouvements reposent sur CSS et SVG ; aucun fichier GIF lourd ni dessin
-bitmap n’est nécessaire.
+Un MP4 ou WebM peut toujours remplacer une scène : placer le fichier dans
+`public/archetypes/` et renseigner `media` dans `archetypes.ts` avec un poster.
+En cas d’erreur, la scène SVG prend le relais. Voir les noms normalisés dans
+`public/archetypes/README.md`. Reconstruire après chaque changement.
+
+## Musique procédurale
+
+La musique commence **dans le geste de choix du symbole**, ce qui permet
+l’activation d’AudioContext sur mobile. Rien ne joue au chargement de la page.
+Si l’utilisateur a explicitement coupé le son, les choix suivants respectent
+cette préférence jusqu’à la reprise avec le bouton Musique.
+
+Le moteur utilise Web Audio, sans fichier musical, téléchargement, micro ou API.
+Chaque symbole possède un motif, un registre, une densité, un timbre, des
+silences et une profondeur de réverbération. Une collection pentatonique
+commune rend les passages entre symboles compatibles harmoniquement.
+Les phrases évoluent par inversions, réponses, déplacements et silences :
+ce n’est pas une courte boucle audio répétée.
+
+Les voix sont synthétisées avec des oscillateurs, des enveloppes et des filtres.
+Une réverbération stéréo est calculée localement. Un compresseur et une marge
+de niveau limitent les crêtes ; un fondu accompagne chaque changement.
+Les anciennes voix sont arrêtées après leur disparition et les nœuds sont
+libérés. La musique se suspend lorsque l’onglet est masqué, puis reprend.
+Elle s’arrête lorsqu’on quitte la page.
+
+**Aide → Ambiance sonore** permet d’ajuster le volume. Pendant la lecture
+vocale, la musique s’abaisse puis revient. Le niveau et le rendu final dépendent
+aussi du volume système et des haut-parleurs ou du casque utilisés.
+
+## Architecture
 
 ```text
 src/
+  audio/score.ts              Synthèse, partitions, fondus et ressources audio
+  hooks/useAmbientMusic.ts    Activation au choix, coupure, volume, voix et visibilité
   components/
-    ResonanceDisk.tsx        Choix multiple, glyphes, liens et halo
-    ArchetypeSymbol.tsx      Les douze glyphes dessinés
-    ResonanceEmergence.tsx   Bulles et composition procédurale
-    ArchetypeAnimation.tsx   Scène SVG ou média de remplacement
-    InkScenes.tsx            Douze scènes d’encre animées
-    ArchetypeReading.tsx     Inspiration flash, question, renouvellement
-    VoicePlayer.tsx          Lecture du texte effectivement affiché
+    ResonanceDisk.tsx         Choix unique et navigation clavier
+    ArchetypeSymbol.tsx       Douze glyphes dessinés
+    ResonanceEmergence.tsx    Bulles et apparition de la scène
+    ArchetypeAnimation.tsx    Scène SVG ou média externe
+    InkScenes.tsx             Douze scènes d’encre et de pigments
+    ArchetypeReading.tsx      Image sensible, éclairage clinique, question
+    VoicePlayer.tsx           Lecture vocale du texte affiché
   data/
-    archetypes.ts            Identités, médias, textes longs de référence
-    resonance.ts             Perspectives, croisements, moteur et historique
+    archetypes.ts             Identités, médias et textes longs de référence
+    artDirection.ts           Palettes des douze scènes et du halo
+    resonance.ts              96 perspectives et renouvellement
   styles/
-    theme.css                Interface, lecture et accessibilité
-    scenes.css               Boucles des douze scènes
-    emergence.css            Frémissement, halo, apparition et composition
-  App.tsx                    États du tirage, aide et préférences
-public/
-  archetypes/                Futurs médias artistiques
-  audio/                     Enregistrements facultatifs
-  manifest.webmanifest
-scripts/
-  build-sw.mjs               Précache de toutes les ressources livrées
-  check-content.mjs          Textes longs de référence
-  check-resonance.mjs        Répertoire, 298 sélections et non-répétition
-  check-pwa.mjs              Scénarios hors ligne en mémoire
+    theme.css                 Interface et accessibilité
+    scenes.css                Gestes et boucles des douze scènes
+    emergence.css             Apparition, halo, lecture et commandes musicales
 ```
 
-Les scènes SVG sont procédurales. Pour les remplacer, ajouter un fichier dans
-`public/archetypes/` et renseigner `media` dans `archetypes.ts` :
+## Accessibilité et données
 
-```ts
-media: {
-  type: 'video',
-  src: './archetypes/01-noeud.webm',
-  poster: './archetypes/01-noeud.jpg',
-},
-```
+- Tab entre les contrôles ; flèches, Début et Fin pour changer le symbole.
+- Le disque est un groupe radio : un seul choix est actif.
+- **Aide → Affichage → Grands caractères** pour la projection.
+- **Sans animation** et le réglage système de réduction des mouvements
+  affichent directement une scène fixe et le texte. Le son conserve sa commande.
+- Focus visible, descriptions textuelles, aide native refermable avec Échap.
+- Lecture vocale volontaire, utilisant si possible une voix française locale.
+  L’écoute hors ligne nécessite une voix installée sur l’appareil.
 
-MP4 H.264 ou WebM muet, boucle de 5 à 8 secondes. Le poster sert d’alternative
-fixe. En cas d’erreur, la scène SVG prend le relais. Les noms normalisés sont
-indiqués dans `public/archetypes/README.md`. Reconstruire après chaque changement.
-
-## Lecture et accessibilité
-
-- **Aide → Affichage → Grands caractères** : lecture pour la projection.
-- **Sans animation** : conserve les glyphes et les textes, sans frémissement,
-  halo animé ou scène en mouvement ; le texte apparaît immédiatement.
-- **Pause** : fige les scènes et le halo à leur position courante.
-- **Clavier** : Tab pour les contrôles ; flèches, Début et Fin dans le disque ;
-  Entrée ou Espace pour choisir ou retirer un symbole.
-- **Réduction des mouvements** : respecte le réglage système, affiche une scène
-  fixe et fait apparaître directement l’inspiration.
-- Noms accessibles pour les glyphes, description des scènes, focus visible,
-  états de sélection annoncés, aide native refermable avec Échap.
-
-La lecture vocale utilise SpeechSynthesis sur **le texte du tirage affiché**.
-Elle reste volontaire, s’arrête au changement de tirage et ne démarre jamais
-avec l’animation. Les énoncés sont découpés pour limiter les interruptions sur
-mobile. Une voix française locale est privilégiée ; son timbre dépend du système.
-L’écoute hors ligne demande une voix installée sur l’appareil. Si une voix
-distante est utilisée, elle ne reçoit que le texte public de la métaphore.
-Le composant `VoicePlayer` accepte aussi `audioSrc` pour un enregistrement
-correspondant exactement au texte d’un tirage.
+Pas de formulaire clinique, compte applicatif, historique de situations,
+localStorage, cookies applicatifs ou analyse d’audience. Les choix et les
+graines de tirage restent en mémoire pendant la visite. La voix distante du
+système, lorsqu’elle est utilisée, ne reçoit que le texte public affiché.
 
 ## PWA et hors ligne
 
-Le build précache le code, les contenus, le style, les icônes et tous les médias
-livrés. Après installation du cache, l’aide indique **Disponible hors ligne**.
-Attendre ce message avant de fermer la première visite.
+Le build génère le service worker et précache les ressources livrées. L’aide
+indique **Disponible hors ligne** une fois le cache installé. Attendre cette
+indication avant de fermer la première visite. La musique est synthétisée
+localement et ne demande aucune ressource musicale en ligne.
 
 Sur Android compatible : ouvrir l’URL HTTPS puis utiliser **Installer
-l’application** ou **Ajouter à l’écran d’accueil** dans le navigateur.
-L’accès au lien hébergé peut dépendre des droits de l’hébergeur ; aucun compte
-n’est géré dans le code de l’application.
+l’application** ou **Ajouter à l’écran d’accueil**. Les caches peuvent être
+supprimés par le navigateur ; un média manquant ou trop lourd peut empêcher le
+précache complet. La version de développement n’enregistre pas de service worker.
 
-Une mise à jour change la version du cache et ne supprime que les anciens
-caches de cette application. Une page déjà ouverte peut rester sur son ancienne
-version jusqu’à l’actualisation. Les navigateurs peuvent effacer leurs caches ;
-un média introuvable, lourd ou un quota insuffisant peut empêcher le précache.
-Le mode développement n’enregistre pas de service worker.
+## Vérifications
 
-## Données
-
-Pas de formulaire, historique clinique, localStorage, cookies applicatifs,
-analyse d’audience, backend d’inférence ou appel à une API d’IA.
-Les choix, les graines de tirage et les identifiants des angles récents restent
-uniquement en mémoire pendant la visite. Le cache PWA contient les ressources
-techniques et éditoriales livrées, jamais de données de patients.
-
-## Vérifications et limites
-
-- TypeScript strict et build de production.
-- Contrôle du répertoire : 96 perspectives et 66 ponts métaphoriques.
-- Test des 298 sélections possibles ; génération déterministe à graine identique ;
-  premier cycle sans répétition et évitement des derniers angles.
-- Chrome desktop : choix simple et multiple, glyphes, frémissement, scène fusionnée,
-  halo, changement de texte, aide et modes de lecture contrôlés dans le navigateur.
-- Cadres de 320, 360, 390 et 768 pixels : cibles d’au moins 44 × 44 pixels et
-  absence de débordement contrôlées.
+- TypeScript strict et construction de production.
+- Douze premiers cycles de huit angles sans répétition et contrôle de la longueur
+  des 96 textes ; une seule identité d’archétype par tirage.
+- Douze partitions distinctes, fréquences compatibles, niveaux et événements
+  valides, phrases déterministes et évolutives.
+- Chrome desktop : douze choix uniques et scènes, démarrage musical au choix,
+  coupure, reprise et maintien du silence après coupure.
+- Rendu Web Audio hors ligne des douze ambiances : signal non nul, absence
+  de saturation et extinction en fin de rendu.
+- Formats mobiles simulés et contrôle des cibles tactiles.
 - Service worker : précache, navigation et ressources hors ligne en simulation.
 
-**Non vérifié sur matériel réel :** Android, installation depuis son menu,
-mode avion, cadence de 30–60 images/s et lecteur d’écran. La voix du navigateur
-distant n’a pas produit de son ; l’indisponibilité est gérée. La qualité des voix
-reste à vérifier sur les appareils utilisés. Aucune validation clinique ou
-promesse d’efficacité du dispositif n’est revendiquée.
+**Restent à vérifier sur matériel réel :** installation et mode avion Android,
+écoute subjective au casque et sur téléphone, cadence des animations et lecteur
+d’écran. Le navigateur distant ne produit pas de voix de synthèse audible ;
+le cas d’indisponibilité est géré. Aucune validation clinique du dispositif
+n’est revendiquée.

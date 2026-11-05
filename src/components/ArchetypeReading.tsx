@@ -2,13 +2,13 @@ import type { ResonanceInspiration } from '../data/resonance';
 import { VoicePlayer } from './VoicePlayer';
 import { UiIcon } from './UiIcon';
 
-export function ArchetypeReading({ inspiration, onReturn, onRenew }: { inspiration: ResonanceInspiration; onReturn: () => void; onRenew: () => void }) {
+export function ArchetypeReading({ inspiration, onReturn, onRenew, onSpeaking }: { inspiration: ResonanceInspiration; onReturn: () => void; onRenew: () => void; onSpeaking: (playing: boolean) => void }) {
   return (
     <article className="archetype-reading flash-reading" aria-labelledby="reading-title" key={inspiration.id}>
       <header className="reading-header">
-        <p className="reading-combination">{inspiration.symbols.map(a => a.name).join(' × ')}</p>
+        <p className="reading-combination">{inspiration.archetype.name}</p>
         <h2 id="reading-title" tabIndex={-1}>{inspiration.title}</h2>
-        <VoicePlayer readingId={inspiration.id} paragraphs={[inspiration.title, ...inspiration.paragraphs, inspiration.question, inspiration.invitation]} />
+        <VoicePlayer readingId={inspiration.id} paragraphs={[inspiration.title, ...inspiration.paragraphs, inspiration.question, inspiration.invitation]} onPlayingChange={onSpeaking} />
       </header>
       <div className="projective-prose flash-prose">
         {inspiration.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
