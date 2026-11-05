@@ -110,16 +110,16 @@
 .has-selection .center-selected-caption { bottom:5%; padding-top:22px; }
 .has-selection .center-selected-caption h2 { font-size:27px; }
 .flash-prose p:first-child { font:italic 24px/1.7 var(--serif); color:#465b56; }
-.flash-prose p + p { font:400 16px/1.9 'Avenir Next',Avenir,'Segoe UI',system-ui,sans-serif; color:#383e3b; margin-top:25px; }
+.flash-prose p + p { font:400 21px/1.8 var(--serif); color:#383e3b; margin-top:25px; }
 .collective-mode .flash-prose p:first-child { font-size:30px; }
-.collective-mode .flash-prose p + p { font-size:23px; }
+.collective-mode .flash-prose p + p { font-size:28px; }
 @media(max-width:700px) {
  .header-actions { gap:2px; }
  .music-button { font-size:10px; padding:8px 6px; }
  .has-selection .center-selected-caption h2 { font-size:22px; }
  .flash-prose p:first-child { font-size:21px; line-height:1.65; }
- .flash-prose p + p { font-size:15px; line-height:1.85; }
+ .flash-prose p + p { font-size:20px; line-height:1.75; }
  .collective-mode .flash-prose p:first-child { font-size:26px; }
- .collective-mode .flash-prose p + p { font-size:21px; }
+ .collective-mode .flash-prose p + p { font-size:25px; }
 }
 @media(max-width:380px) { .has-selection .center-selected-caption h2 { font-size:19px; } }

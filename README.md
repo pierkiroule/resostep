@@ -4,8 +4,8 @@
 
 Une équipe évoque une situation complexe de pédopsychiatrie. Un professionnel
 choisit **un seul symbole** sur le disque. Des bulles frémissent, l’image émerge
-et sa musique commence. Un texte bref relie une scène sensible à une expérience
-de l’équipe, puis propose une question pour déplacer le regard.
+et sa musique commence. « Et si cette situation ressemblait à… » : une métaphore
+se déploie et propose une question pour prolonger l’image dans la situation clinique.
 
 La consigne : **« Pour cette situation, quel symbole vous parle ? »**
 
@@ -69,22 +69,36 @@ L’aide propose un rituel bref : déposer la situation, partager ses résonance
 choisir une image, la rencontrer, laisser une question ouvrir l’échange, puis
 revenir à la situation. Ces étapes ne constituent pas un parcours obligatoire.
 
-## Textes : une scène, un éclairage clinique, une question
+## Textes : une métaphore qui se déploie
 
-`src/data/resonance.ts` contient **96 perspectives réécrites**, huit par symbole.
-Chaque perspective comporte :
+`src/data/resonance.ts` contient **96 métaphores filées originales**, huit par
+symbole. Chaque récit comporte :
 
-1. Une scène sensorielle simple : matière, poids, mouvement, lumière, souffle.
-2. Un lien avec une expérience professionnelle concrète : attentes, appuis,
-   responsabilités, désaccords, rythme du suivi, récit partagé ou fatigue.
-3. Deux questions possibles, dont une est présentée au tirage.
+1. Une entrée hypothétique : « Et si cette situation ressemblait à… ».
+2. Une image qui se poursuit : les rames ne visent pas la même rive, une amarre
+   tire autrement quand la marée baisse, une porte ouverte manque de premier appui.
+3. Un lien possible avec la rencontre clinique, sans attribuer d’avance un rôle
+   au jeune, à ses proches ou aux soignants.
+4. Deux questions propres à ce récit, dont une est présentée au tirage, et une
+   fin ouverte qui en garde le fil.
 
-Les textes affichés font environ **86 à 111 mots**, invitation et question
-comprises. Ils visent une lecture brève, poétique et accessible. Les huit angles
-d’un symbole sont proposés avant le début d’un nouveau cycle ; le cycle suivant
-évite les derniers angles. Les identifiants récents restent en mémoire pendant
-la visite seulement. La variété est écrite et finie, puis renouvelée par les
-questions et les variantes visuelles et musicales.
+Les textes affichés font **129 à 156 mots**, titre, invitation et question
+compris. Ils visent une lecture d’environ une minute, sans compte à rebours.
+La fin et la question appartiennent toujours à la même métaphore : aucune
+conclusion générique n’est ajoutée au hasard. Le collectif peut prolonger le
+récit, déplacer les places dans l’image, ou choisir une autre lecture.
+
+Les huit récits d’un symbole sont proposés sans répétition à chaque cycle.
+Le début du cycle suivant évite les trois dernières lectures de ce symbole,
+y compris si d’autres symboles ont été choisis entre-temps. Seuls les identifiants
+des tirages restent en mémoire pendant la visite. La variété est écrite et finie,
+puis renouvelée par les questions et les variantes visuelles et musicales.
+L’application ne connaît pas la situation évoquée et ne prétend pas lui associer
+automatiquement une métaphore pertinente.
+
+Pour personnaliser un récit, modifier ses champs `opening`, `unfolding`,
+`questions` et `invitation` dans `resonance.ts`. Garder une seule image qui évolue,
+plutôt que de la remplacer par un commentaire théorique ou une leçon à appliquer.
 
 Le moteur prend désormais **un objet `Archetype`**, et non une liste : aucun
 croisement automatique de plusieurs symboles. Les anciens textes longs restent
@@ -158,12 +172,12 @@ src/
     ResonanceEmergence.tsx    Bulles et apparition de la scène
     ArchetypeAnimation.tsx    Scène SVG ou média externe
     InkScenes.tsx             Douze scènes d’encre et de pigments
-    ArchetypeReading.tsx      Image sensible, éclairage clinique, question
+    ArchetypeReading.tsx      Métaphore filée, question et fin ouverte
     VoicePlayer.tsx           Lecture vocale du texte affiché
   data/
     archetypes.ts             Identités, médias et textes longs de référence
     artDirection.ts           Palettes des douze scènes et du halo
-    resonance.ts              96 perspectives et renouvellement
+    resonance.ts              96 récits complets et cycles sans répétition
   styles/
     theme.css                 Interface et accessibilité
     scenes.css                Gestes et boucles des douze scènes
@@ -201,8 +215,9 @@ précache complet. La version de développement n’enregistre pas de service wo
 ## Vérifications
 
 - TypeScript strict et construction de production.
-- Douze premiers cycles de huit angles sans répétition et contrôle de la longueur
-  des 96 textes ; une seule identité d’archétype par tirage.
+- Six cycles de huit récits sans répétition pour chacun des douze symboles ;
+  contrôle des 96 métaphores et de leurs 192 questions, de la longueur affichée
+  et du lien entre récit, question et invitation.
 - Douze partitions distinctes, fréquences compatibles, niveaux et événements
   valides, phrases déterministes et évolutives.
 - Chrome desktop : douze choix uniques et scènes, démarrage musical au choix,

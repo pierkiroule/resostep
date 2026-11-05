@@ -51,7 +51,7 @@ export default function App() {
   useEffect(() => {
     if (!pending) return;
     const reveal = () => {
-      recentPerspectives.current = [...recentPerspectives.current, pending.lensKey].slice(-64);
+      recentPerspectives.current = [...recentPerspectives.current, pending.lensKey];
       setInspiration(pending);
       setPhase('revealed');
       setPending(null);
@@ -139,7 +139,7 @@ export default function App() {
             </div>
           </details>
           <details className="help-details"><summary>Ambiance sonore</summary><p>La musique commence dès le choix d’un symbole. Chaque image possède son timbre et sa phrase musicale ; ils évoluent doucement. Le bouton Musique permet de couper ou de reprendre le son. Ce choix est conservé pendant la visite.</p>{selected && <p className="music-description">{musicPalettes[selected.id].name}.</p>}<label className="volume-control" htmlFor="music-volume"><span>Volume musical <output>{Math.round(music.volume * 100)} %</output></span><input id="music-volume" type="range" min="0" max="100" step="1" value={Math.round(music.volume * 100)} onChange={event => music.changeVolume(Number(event.target.value) / 100)} /></label><p>Pendant la lecture vocale, la musique s’efface pour laisser entendre le texte. Elle se suspend lorsque vous quittez l’onglet.</p></details>
-          <details className="help-details"><summary>Le jeu des possibles</summary><p>Un seul choix suffit. Touchez un autre symbole pour changer d’image. La flèche circulaire ou « Un autre pas de côté » renouvelle la perspective avec le symbole actuel.</p><p>Les 96 textes partent d’une scène sensible, la relient à une expérience de l’équipe et proposent une question ouverte. Les angles récemment rencontrés sont écartés avant un nouveau cycle. L’application n’analyse pas la situation évoquée.</p></details>
+          <details className="help-details"><summary>Le jeu des possibles</summary><p>Un seul choix suffit. Touchez un autre symbole pour changer d’image. La flèche circulaire ou « Un autre pas de côté » renouvelle le récit avec le symbole actuel.</p><p>« Et si cette situation ressemblait à… » : une métaphore se déploie, puis une question invite à faire des liens avec la situation évoquée. Chacun peut prolonger l’image à sa manière, lui donner d’autres places ou l’écarter. Les huit récits de chaque symbole sont rencontrés avant un nouveau cycle. L’application ne connaît pas la situation et ne choisit pas sa signification.</p></details>
           <details className="help-details"><summary>Quelques repères</summary><p>Résonance et indisponibilité chez Hartmut Rosa ; jeu et espace potentiel chez Donald Winnicott ; relations et circularité chez Gregory Bateson. Ces inspirations ouvrent des perspectives, sans donner aux symboles une signification universelle.</p><p>Les scènes SVG sont procédurales et remplaçables par vos médias artistiques. La lecture à voix haute dépend des voix disponibles sur l’appareil. Hors ligne, elle nécessite une voix installée localement.</p></details>
           {(offline || cached) && <p className="offline-indicator" role="status">{offline ? 'Hors ligne' : 'Disponible hors ligne'}</p>}
           <button type="button" className="dialog-done" onClick={() => help.current?.close()}>Rencontrer le disque <UiIcon name="arrow" /></button>
