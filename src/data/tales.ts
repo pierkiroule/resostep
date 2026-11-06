@@ -2,6 +2,8 @@ import type { Archetype, ArchetypeId } from './archetypes';
 import { seededRandom } from './resonance';
 import { narratives } from './narratives';
 import { clinicalLenses } from './clinicalLenses';
+import { clinicalBridges, imageThemes } from './clinicalBridges';
+import type { ClinicalBridge } from './clinicalBridges';
 
 export const emojiSymbols: Record<ArchetypeId, string> = {
   noeud: '🪢', barque: '⛵', roseau: '🌾', mycelium: '🍄', graine: '🌱', cage: '🕊️',
@@ -16,7 +18,8 @@ export interface TaleInspiration {
   alternativeTitle: string;
   paragraphs: string[];
   sideStepTitle: string;
-  sideStep: string;
+  clinicalBridge: ClinicalBridge;
+  otherImages: { id: ArchetypeId; theme: string }[];
   questions: [string, string];
   invitation: string;
   storyInvitation: string;
@@ -59,25 +62,25 @@ export function makeTale(selected: Archetype[], recent: string[], seed: number):
   const primary = selected[0].id;
   const story = narratives[primary][coreIndex];
   const lens = clinicalLenses[primary];
+  const bridge = clinicalBridges[primary][coreIndex];
+  const focus = bridge.focus ?? lens;
   const encounters = selected.slice(1).map((item, index) => {
     const echo = clinicalLenses[item.id].echoes[(variant + index) % 2];
     // Les échos sont des souvenirs : la gardienne reste dans sa scène, même si elle est en barque ou dans le phare.
     return `${index === 0 ? 'Avant de reprendre son geste, une scène lui revient en mémoire. ' : 'Un autre souvenir se mêle au premier. '}${echo}`;
   });
   const ending = `${encounters.length ? lens.returns[coreIndex] + ' ' : ''}${story.endings[endingIndex]}`;
-  // Deux questions distinctes : les éprouvés de l’équipe et une perspective relationnelle.
-  const relationalLens = selected.length > 1
-    ? clinicalLenses[selected[1 + Math.floor(random() * (selected.length - 1))].id]
-    : lens;
+  // Les questions suivent la scène principale, plutôt qu’un autre émoji tiré au hasard.
   return {
     id: `${seed}-${lensKey}`, lensKey, archetypes: [...selected],
     title: endingIndex % 2 ? story.otherTitle : story.title,
     alternativeTitle: endingIndex % 2 ? story.title : story.otherTitle,
     paragraphs: [story.opening, story.tension, ...encounters, ending],
-    sideStepTitle: lens.title,
-    sideStep: lens.opening,
-    questions: [lens.questions[0], relationalLens.questions[1]],
-    invitation: lens.returnToSituation,
+    sideStepTitle: focus.title,
+    clinicalBridge: bridge,
+    otherImages: selected.slice(1).map(item => ({ id: item.id, theme: imageThemes[item.id] })),
+    questions: [...focus.questions],
+    invitation: focus.returnToSituation,
     storyInvitation: invitations[endingIndex],
   };
 }

@@ -11,10 +11,13 @@ async function moduleUrl(file, dependencies = {}) {
 const { archetypes } = await import(await moduleUrl('src/data/archetypes.ts'));
 const narrativeUrl = await moduleUrl('src/data/narratives.ts');
 const lensUrl = await moduleUrl('src/data/clinicalLenses.ts');
+const bridgeUrl = await moduleUrl('src/data/clinicalBridges.ts');
 const { narratives } = await import(narrativeUrl);
 const { clinicalLenses } = await import(lensUrl);
+const { clinicalBridges, imageThemes } = await import(bridgeUrl);
 const { makeTale, emojiSymbols } = await import(await moduleUrl('src/data/tales.ts', {
   './resonance': await moduleUrl('src/data/resonance.ts'), './narratives': narrativeUrl, './clinicalLenses': lensUrl,
+  './clinicalBridges': bridgeUrl,
 }));
 const combinations = [];
 function collect(chosen) {
@@ -58,11 +61,18 @@ for (const chosen of combinations) {
     assert.equal(tale.paragraphs[1], original.tension);
     assert(original.endings.some(ending => tale.paragraphs.at(-1).endsWith(ending)), 'La fin revient au même récit');
     assert(tale.title !== tale.alternativeTitle && tale.storyInvitation);
-    assert.equal(tale.sideStep, clinicalLenses[chosen[0].id].opening);
-    assert.equal(tale.invitation, clinicalLenses[chosen[0].id].returnToSituation);
+    const coreIndex = primaryStories.indexOf(original);
+    assert.deepEqual(tale.clinicalBridge, clinicalBridges[chosen[0].id][coreIndex], 'Le lien clinique explique la scène réellement affichée');
+    assert(['image', 'practice', 'example'].every(field => typeof tale.clinicalBridge[field] === 'string' && tale.clinicalBridge[field].trim().length > 0));
+    assert.deepEqual(tale.otherImages, chosen.slice(1).map(item => ({ id: item.id, theme: imageThemes[item.id] })), 'Les pistes supplémentaires correspondent aux images choisies');
+    const focus = tale.clinicalBridge.focus ?? clinicalLenses[chosen[0].id];
+    assert.equal(tale.invitation, focus.returnToSituation);
+    assert.equal(tale.sideStepTitle, focus.title);
+    assert.deepEqual(tale.questions, focus.questions, 'Les questions restent liées à la variante affichée, même avec plusieurs émojis');
     assert.equal(tale.questions.length, 2);
     assert.equal(new Set(tale.questions).size, 2);
     assert(tale.questions.every(question => question.endsWith('?')));
+    assert(tale.questions.every(question => question.trim().split(/\s+/).length <= 14), 'Les questions restent courtes');
     for (let i = 1; i < chosen.length; i++) {
       assert(clinicalLenses[chosen[i].id].echoes.some(echo => tale.paragraphs[i + 1].includes(echo)), 'Chaque image supplémentaire intervient dans la scène');
     }
@@ -86,5 +96,5 @@ assert.throws(() => makeTale([{ id: 'constructor' }], [], 1), /différents/);
 assert.throws(() => makeTale([null], [], 1), /différents/);
 assert.throws(() => makeTale(null, [], 1), /différents/);
 assert.throws(() => makeTale([archetypes[0]], [], NaN), /fini/);
-console.log(`Contes : 24 noyaux narratifs, 48 titres, 96 fins liées et 12 regards d’intervision. ${minimum}–${maximum} mots.`);
+console.log(`Contes : 24 noyaux narratifs, 48 titres, 96 fins liées et 24 liens entre conte et clinique. ${minimum}–${maximum} mots.`);
 console.log('1 464 sélections ordonnées : huit variantes sans répétition, cycles indépendants, images, questions et titres liés aux récits vérifiés.');

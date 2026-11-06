@@ -51,7 +51,8 @@ la navigation et les ressources hors ligne en simulation.
    Un quatrième choix ne remplace aucun choix existant.
 3. **Inspirer un pas de côté et un pas conté** compose la proposition et place le
    focus clavier sur le titre du récit. La génération est indisponible sans émoji.
-   Le conte vient d’abord, puis les deux questions et un retour à la situation.
+   Le conte vient d’abord. Un pont pédagogique relie ensuite l’image à la pratique
+   avec un exemple fictif, avant les deux questions et le retour à la situation.
    **Prolonger ou renommer le conte** ouvre une invitation narrative et un autre titre.
 4. **Une autre piste avec ces émojis** renouvelle les variantes avec les images
    du récit affiché. **Modifier mes émojis** ramène au sélecteur.
@@ -75,6 +76,15 @@ l’équipe, relations, temporalités, soutiens, transmissions, continuité fami
 Chaque regard fournit une hypothèse, une question sur les éprouvés, une question
 relationnelle et une invitation à revenir à un épisode concret. Ces textes
 n’assignent aucun rôle clinique aux images et ne constituent pas une validation clinique.
+
+`src/data/clinicalBridges.ts` relie chacune des **24 scènes** à la pratique :
+ce qui se joue dans le conte, ce que cela peut évoquer dans le soin, et un exemple
+fictif en pédopsychiatrie. Ce lien suit la scène réellement tirée, même lorsque
+le titre change. Les images supplémentaires donnent aussi de courtes pistes
+pour élargir la lecture. Il s’agit de lectures possibles, sans correspondance
+fixe entre un personnage et une personne de la situation. Les deux questions et
+le retour à la situation suivent aussi la variante affichée. Les questions restent
+courtes (14 mots au maximum), même avec plusieurs émojis.
 
 `src/data/tales.ts` compose ces ressources : scène et tension du premier émoji,
 souvenirs liés aux images supplémentaires, retour à une fin de la même scène.

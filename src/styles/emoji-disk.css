@@ -70,3 +70,16 @@
   .tale-prose { font-size: 12pt; max-width: none; }
   .intervision-questions li, .return-to-situation { break-inside: avoid; }
 }
+
+.clinical-bridge { margin: 24px 0 0; }
+.clinical-bridge > div + div { margin-top: 20px; }
+.clinical-bridge dt { font-size: 12px; font-weight: 600; color: #415c40; line-height: 1.6; }
+.clinical-bridge dd { margin: 5px 0 0; font-size: 15px; line-height: 1.8; color: #334137; }
+.clinical-bridge .bridge-example { padding: 16px 18px; background: #ffffffc9; border-left: 3px solid #b7cbbb; border-radius: 0 8px 8px 0; }
+.other-image-links { margin-top: 22px; padding-top: 16px; border-top: 1px solid #d6e0d0; font-size: 12px; line-height: 1.8; color: #536950; }
+.other-image-links p { margin: 0 0 8px; }
+.other-image-links ul { list-style: none; display: flex; flex-wrap: wrap; gap: 8px 16px; padding: 0; margin: 0; }
+.other-image-links li { display: inline-flex; align-items: baseline; gap: 6px; font-size: 12px; }
+.other-image-links li + li { margin-top: 0; }
+@media(max-width:700px) { .clinical-bridge .bridge-example { padding: 14px; } }
+@media print { .clinical-bridge > div { break-inside: avoid; } }

@@ -31,9 +31,18 @@ export function ArchetypeReading({ inspiration, onReturn, onRenew, onSpeaking }:
       </section>
 
       <section className="side-step" aria-labelledby="side-step-title">
-        <p className="eyebrow">Le pas de côté · ouvrir l’intervision</p>
+        <p className="eyebrow">Le pas de côté · du conte à la clinique</p>
         <h3 id="side-step-title">{inspiration.sideStepTitle}</h3>
-        <p>{inspiration.sideStep}</p>
+        <p className="bridge-intro">Un lien possible, à discuter ensemble.</p>
+        <dl className="clinical-bridge">
+          <div><dt>Dans le conte</dt><dd>{inspiration.clinicalBridge.image}</dd></div>
+          <div><dt>Dans la pratique</dt><dd>{inspiration.clinicalBridge.practice}</dd></div>
+          <div className="bridge-example"><dt>Un exemple fictif en pédopsychiatrie</dt><dd>{inspiration.clinicalBridge.example}</dd></div>
+        </dl>
+        {inspiration.otherImages.length > 0 && <div className="other-image-links">
+          <p>Les autres images ouvrent aussi sur…</p>
+          <ul>{inspiration.otherImages.map(item => <li key={item.id}><span aria-hidden="true">{emojiSymbols[item.id]}</span>{item.theme}</li>)}</ul>
+        </div>}
         <ol className="intervision-questions">
           {inspiration.questions.map((question, index) => <li key={question}>
             <span className="question-label">{index === 0 ? 'Ce que cela nous fait vivre' : 'Ce qui reste à entendre'}</span>
