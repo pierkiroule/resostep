@@ -154,3 +154,63 @@
   .symbol-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
 @media print { .reading-comfort, .journey-intro { display: none; } }
+
+/* Le choix d’images et les deux temps de l’intervision. */
+.app-subtitle { display: block; font: 400 20px/1.5 var(--serif); letter-spacing: 0; color: #506552; margin: 15px auto 0; }
+.app-subtitle > span { margin-left: 5px; }
+.introduction h1 { max-width: 850px; margin: auto; }
+.brand { font: 28px var(--serif); color: #536a54; }
+.emoji-picker { max-width: 740px; margin: 30px auto 0; padding: 28px; border: 1px solid #dce2d7; border-radius: 20px; background: #fafbf7; scroll-margin-top: 24px; }
+.picker-heading { display: flex; align-items: center; justify-content: space-between; gap: 15px; }
+.picker-heading .eyebrow { margin: 0 0 8px; }
+.picker-heading h2 { margin: 0; font: 400 28px/1.3 var(--serif); }
+.selection-count { flex: 0 0 auto; background: #e4eddc; color: #344c31; border-radius: 24px; padding: 10px 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+#picker-hint { font-size: 13px; line-height: 1.7; color: #59635b; margin: 14px 0 20px; }
+.emoji-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; }
+.emoji-choice { position: relative; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; min-height: 112px; border: 2px solid #e1e5dc; background: #fff; border-radius: 14px; padding: 15px 5px; font-size: 12px; transition: background .2s, border-color .2s; }
+.emoji-choice:hover { border-color: #8a9c80; background: #f3f7ef; }
+.emoji-choice.is-selected { border-color: #3e653c; background: #e6f0df; box-shadow: 0 0 0 2px #fff inset; color: #213e20; font-weight: 600; }
+.emoji-picture { font: 36px/1.2 'Apple Color Emoji', 'Segoe UI Emoji', 'Noto Color Emoji', sans-serif; }
+.emoji-check { position: absolute; top: 5px; right: 5px; padding: 3px 5px; border-radius: 8px; background: #3e653c; color: #fff; font-size: 10px; }
+.selection-tray { margin-top: 20px; padding: 14px; border: 1px dashed #acbba2; border-radius: 12px; background: #fff; }
+.selection-tray > p { margin: 0; font-size: 12px; line-height: 1.6; }
+.selection-tray strong { font-weight: 400; color: #5e6a58; }
+.selected-emojis { display: flex; flex-wrap: wrap; gap: 8px; }
+.selected-emojis button { min-height: 44px; display: inline-flex; align-items: center; gap: 8px; border: 1px solid #a8b89c; border-radius: 24px; background: #f1f6ec; padding: 8px 12px; font-size: 12px; margin-top: 10px; }
+.selected-emojis button > span:first-child { font-size: 23px; }
+.clear-selection { display: block; min-height: 44px; padding: 10px 0 0; border: 0; background: none; text-decoration: underline; text-underline-offset: 4px; color: #626a5e; font-size: 12px; }
+.selection-message { min-height: 36px; font-size: 12px; line-height: 1.6; color: #50614a; margin: 14px 0 10px; }
+.generate-button { display: flex; align-items: center; justify-content: center; gap: 12px; width: 100%; min-height: 54px; padding: 13px 18px; border: 1px solid #345733; border-radius: 12px; background: #345733; color: white; font-size: 14px; line-height: 1.5; }
+.generate-button:hover { background: #284526; }
+.generate-button:disabled { border-color: #d8ddd3; background: #e7ebe2; color: #697163; }
+.reading-emojis { display: flex; justify-content: center; gap: 16px; font-size: 38px; margin: 0 0 20px; }
+.side-step, .tale-step { margin-top: 28px; padding: 26px; border: 1px solid #dce2d7; border-radius: 16px; }
+.side-step { background: #f3f6ee; }
+.side-step h3 { font: 400 27px/1.3 var(--serif); margin: 12px 0; }
+.side-step > p:not(.eyebrow), .side-step li { font-size: 15px; line-height: 1.85; }
+.side-step ul { padding-left: 20px; margin-bottom: 0; }
+.side-step li + li { margin-top: 12px; }
+.tale-step h3 { font: 400 31px/1.3 var(--serif); margin: 15px 0; text-wrap: balance; }
+.tale-label, .alternative-title { font-size: 12px; color: #59635b; line-height: 1.8; }
+.alternative-title strong { font-weight: 500; }
+.tale-invitation { border-top: 1px solid #deded8; padding-top: 20px; margin-top: 25px; font: italic 19px/1.7 var(--serif); color: #50614a; }
+.app-note, .reading-boundary, .selection-update { max-width: 700px; margin: 28px auto; font-size: 12px; color: #646c60; text-align: center; line-height: 1.8; }
+.selection-update { padding: 14px; background: #fff8e9; border: 1px solid #e8dabc; border-radius: 10px; color: #675b38; }
+.collective-mode .side-step > p:not(.eyebrow), .collective-mode .side-step li { font-size: 22px; }
+.collective-mode .tale-step h3 { font-size: 38px; }
+@media(max-width:700px) {
+  .app-subtitle { font-size: 18px; max-width: 300px; }
+  .emoji-picker { padding: 18px 14px; margin-top: 24px; }
+  .picker-heading h2 { font-size: 24px; }
+  .emoji-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+  .emoji-choice { min-height: 105px; font-size: 11px; }
+  .emoji-picture { font-size: 33px; }
+  .side-step, .tale-step { padding: 20px 16px; }
+  .tale-step h3 { font-size: 27px; }
+}
+@media(max-width:350px) {
+  .emoji-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .selection-count { padding: 8px; }
+  .generate-button { font-size: 12px; }
+}
+@media print { .emoji-picker, .app-note, .selection-update { display: none; } .tale-reading .side-step, .tale-reading .tale-step { padding: 0; border: 0; background: none; } }

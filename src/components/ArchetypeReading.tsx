@@ -1,26 +1,17 @@
-import type { ResonanceInspiration } from '../data/resonance';
+import type { TaleInspiration } from '../data/tales';
+import { emojiSymbols } from '../data/tales';
 import { VoicePlayer } from './VoicePlayer';
-import { UiIcon } from './UiIcon';
 
-export function ArchetypeReading({ inspiration, onReturn, onRenew, onSpeaking }: { inspiration: ResonanceInspiration; onReturn: () => void; onRenew: () => void; onSpeaking: (playing: boolean) => void }) {
-  return (
-    <article className="archetype-reading flash-reading" aria-labelledby="reading-title" key={inspiration.id}>
-      <header className="reading-header">
-        <p className="reading-combination">{inspiration.archetype.name}</p>
-        <h2 id="reading-title" tabIndex={-1}>{inspiration.title}</h2>
-        <VoicePlayer readingId={inspiration.id} paragraphs={[inspiration.title, ...inspiration.paragraphs, inspiration.question, inspiration.invitation]} onPlayingChange={onSpeaking} />
-      </header>
-      <div className="projective-prose flash-prose">
-        {inspiration.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
-      </div>
-      <section className="flash-question" aria-label="Une question pour l’équipe">
-        <p>{inspiration.question}</p>
-      </section>
-      <p className="final-invitation"><span aria-hidden="true">•°</span>{inspiration.invitation}</p>
-      <div className="reading-end">
-        <button type="button" className="renew-button" onClick={onRenew}><UiIcon name="renew" />Un autre pas de côté</button>
-        <button type="button" className="return-button" onClick={onReturn}><UiIcon name="up" />Revenir au disque</button>
-      </div>
-    </article>
-  );
+export function ArchetypeReading({ inspiration, onReturn, onRenew, onSpeaking }: { inspiration: TaleInspiration; onReturn: () => void; onRenew: () => void; onSpeaking: (playing: boolean) => void }) {
+  const questions = [...new Set(inspiration.questions)];
+  return <article className="archetype-reading flash-reading tale-reading" aria-labelledby="reading-title">
+    <header className="reading-header"><p className="reading-emojis" aria-label={inspiration.archetypes.map(item => item.name).join(', ')}>{inspiration.archetypes.map(item => <span key={item.id} aria-hidden="true">{emojiSymbols[item.id]}</span>)}</p><p className="eyebrow">Une proposition à explorer ensemble</p><h2 id="reading-title" tabIndex={-1}>Le pas de côté & le pas conté</h2></header>
+    <section className="side-step" aria-labelledby="side-step-title"><p className="eyebrow">01 · Le pas de côté</p><h3 id="side-step-title">Déplacer notre regard</h3><p>{inspiration.sideStep}</p><ul>{questions.map(question => <li key={question}>{question}</li>)}</ul></section>
+    <section className="tale-step" aria-labelledby="tale-title"><p className="eyebrow">02 · Le pas conté</p><p className="tale-label">Un titre et une piste de conte à prolonger</p><h3 id="tale-title">{inspiration.title}</h3><p className="alternative-title"><strong>Autre titre possible :</strong> {inspiration.alternativeTitle}</p>
+      <VoicePlayer readingId={inspiration.id} paragraphs={[inspiration.title, ...inspiration.paragraphs]} onPlayingChange={onSpeaking} />
+      <div className="projective-prose flash-prose">{inspiration.paragraphs.map(paragraph => <p key={paragraph}>{paragraph}</p>)}</div><p className="tale-invitation">{inspiration.invitation}</p>
+    </section>
+    <p className="reading-boundary">Ces images ouvrent une discussion ; elles n’expliquent ni le jeune ni sa famille et ne prescrivent aucune conduite.</p>
+    <div className="reading-end"><button type="button" className="renew-button" onClick={onRenew}>Une autre piste avec ces émojis ↻</button><button type="button" className="return-button" onClick={onReturn}>Modifier mes émojis ↑</button></div>
+  </article>;
 }
