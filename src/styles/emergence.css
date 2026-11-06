@@ -123,3 +123,34 @@
  .collective-mode .flash-prose p + p { font-size:25px; }
 }
 @media(max-width:380px) { .has-selection .center-selected-caption h2 { font-size:19px; } }
+
+/* Des repères visibles, sans interrompre le choix d’une image. */
+.journey-intro { max-width: 440px; margin: 17px auto 0; font-size: 14px; line-height: 1.7; color: #59635e; text-wrap: balance; }
+.help-button { display: inline-flex; gap: 7px; width: auto; padding: 10px; font-size: 12px; }
+.reading-comfort { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin: 18px auto 8px; }
+.comfort-button { display: inline-flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; padding: 9px 13px; border: 1px solid #deded8; border-radius: 24px; background: #fff; color: #535d57; font-size: 12px; }
+.comfort-button svg { width: 17px; height: 17px; }
+.comfort-button:hover { background: #f6f7f3; border-color: #9ca99e; }
+.comfort-button[aria-pressed='true'] { background: #eaf0e9; border-color: #718671; color: #293e2e; }
+.text-mode *, .text-mode *::before, .text-mode *::after { animation: none !important; transition: none !important; }
+.disk-tools .reading-cue { display: inline-flex; gap: 9px; width: auto; min-height: 44px; padding: 11px 18px; border: 1px solid #d1d9cf; border-radius: 24px; background: #f1f5ee; color: #344a3b; font-size: 13px; text-decoration: none; }
+.disk-tools .reading-cue:hover { background: #e7eee2; }
+.symbol-directory { margin: 20px auto 0; max-width: 500px; border-top: 1px solid #e5e7df; color: #535d57; font-size: 13px; }
+.symbol-directory summary { min-height: 48px; padding: 14px 6px; cursor: pointer; text-align: center; }
+.symbol-directory > p { margin: 0 8px 14px; font-size: 12px; line-height: 1.6; text-align: center; }
+.symbol-list { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 8px; }
+.symbol-list button { display: flex; align-items: center; gap: 8px; min-height: 54px; padding: 10px; border: 1px solid #deded8; border-radius: 8px; background: #fff; text-align: left; font-size: 12px; }
+.symbol-list button:hover { border-color: #99a796; background: #f8faf5; }
+.symbol-list button[aria-pressed='true'] { background: #edf2e8; border-color: #718671; color: #293e2e; }
+.symbol-list .symbol-drawing { width: 24px; height: 24px; flex: 0 0 auto; }
+.symbol-list button > svg:last-child:not(.symbol-drawing) { width: 15px; height: 15px; margin-left: auto; }
+#reading-title { scroll-margin-top: 30px; }
+.reading-header #reading-title:focus-visible { outline: 2px solid #718671; outline-offset: 8px; border-radius: 3px; }
+@media(max-width:700px) {
+  .journey-intro { font-size: 13px; margin-top: 15px; }
+  .reading-comfort { gap: 6px; margin-top: 15px; }
+  .comfort-button { padding: 9px 11px; font-size: 11px; }
+  .symbol-directory { margin-left: 11px; margin-right: 11px; }
+  .symbol-list { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}
+@media print { .reading-comfort, .journey-intro { display: none; } }
