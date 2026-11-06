@@ -62,6 +62,11 @@ redéployer les prochains commits sur `main`.
 - Un autre symbole **remplace** le choix précédent.
 - Retoucher le symbole choisi ou **Un autre pas de côté** propose un nouvel angle.
 - La flèche circulaire renouvelle également le tirage ; aucun compte à rebours.
+- **Voir les 12 symboles et leurs noms** permet aussi de choisir une image
+  dans une liste, notamment sur écran tactile.
+- **Lire la métaphore** amène au texte et y place le focus clavier.
+  Depuis la lecture, **Un autre pas de côté** affiche directement le nouveau
+  récit et garde le focus sur son titre, sans revenir au disque.
 - La pause visuelle fige la scène et son halo. Le bouton **Musique** coupe ou
   reprend l’ambiance sonore indépendamment de l’animation.
 
@@ -188,7 +193,7 @@ src/
 
 - Tab entre les contrôles ; flèches, Début et Fin pour changer le symbole.
 - Le disque est un groupe radio : un seul choix est actif.
-- **Aide → Affichage → Grands caractères** pour la projection.
+- **Grands caractères**, au-dessus du disque, pour la projection.
 - **Sans animation** et le réglage système de réduction des mouvements
   affichent directement une scène fixe et le texte. Le son conserve sa commande.
 - Focus visible, descriptions textuelles, aide native refermable avec Échap.

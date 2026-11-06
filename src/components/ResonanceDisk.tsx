@@ -12,6 +12,7 @@ interface DiskProps {
   selected: Archetype | null;
   onSelect: (archetype: Archetype) => void;
   onRenew: () => void;
+  onRead: () => void;
   phase: EmergencePhase;
   seed: number;
   paused: boolean;
@@ -20,7 +21,7 @@ interface DiskProps {
   textOnly: boolean;
 }
 
-export function ResonanceDisk({ selected, onSelect, onRenew, phase, seed, paused, onTogglePause, reducedMotion, textOnly }: DiskProps) {
+export function ResonanceDisk({ selected, onSelect, onRenew, onRead, phase, seed, paused, onTogglePause, reducedMotion, textOnly }: DiskProps) {
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
   const pigment = useId().replace(/:/g, '') + '-pigment';
   const angle = selected ? (archetypes.findIndex(a => a.id === selected.id) * 30 - 90) * Math.PI / 180 : 0;
@@ -95,10 +96,21 @@ export function ResonanceDisk({ selected, onSelect, onRenew, phase, seed, paused
 
       <p className="sr-only" aria-live="polite" aria-atomic="true">{phase === 'brewing' ? 'Une image et un pas de côté vont apparaître.' : selected ? selected.name : 'Choisissez un symbole sur le disque.'}</p>
       {phase === 'revealed' && <div className="disk-tools">
-        {!textOnly && !reducedMotion && <button type="button" className="motion-toggle" onClick={onTogglePause} aria-label={paused ? 'Animer la métaphore' : 'Mettre l’animation en pause'}><UiIcon name={paused ? 'play' : 'pause'} /></button>}
-        <a className="reading-cue" href="#lecture" aria-label="Lire la métaphore"><UiIcon name="up" /></a>
+        {!textOnly && !reducedMotion && <button type="button" className="motion-toggle" onClick={onTogglePause} aria-pressed={paused} aria-label={paused ? 'Animer la métaphore' : 'Mettre l’animation en pause'}><UiIcon name={paused ? 'play' : 'pause'} /></button>}
+        <button type="button" className="reading-cue" onClick={onRead}><span>Lire la métaphore</span><UiIcon name="up" /></button>
         <button type="button" className="renew-icon" onClick={onRenew} aria-label="Faire émerger un autre pas de côté avec ce symbole"><UiIcon name="renew" /></button>
       </div>}
+      <details className="symbol-directory">
+        <summary>Voir les 12 symboles et leurs noms</summary>
+        <p>Choisissez aussi par le nom, selon ce qui vous parle.</p>
+        <div className="symbol-list" role="group" aria-label="Choisir un symbole par son nom">
+          {archetypes.map(item => <button type="button" key={item.id} aria-pressed={selected?.id === item.id} onClick={() => onSelect(item)}>
+            <ArchetypeSymbol archetype={item} />
+            <span>{item.name}</span>
+            {selected?.id === item.id && <UiIcon name="check" />}
+          </button>)}
+        </div>
+      </details>
     </section>
   );
 }

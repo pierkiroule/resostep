@@ -27,6 +27,7 @@ export default function App() {
   const [phase, setPhase] = useState<EmergencePhase>('idle');
   const [seed, setSeed] = useState(0);
   const recentPerspectives = useRef<string[]>([]);
+  const focusReadingOnReveal = useRef(false);
   const [collective, setCollective] = useState(false);
   const [textOnly, setTextOnly] = useState(false);
   const [paused, setPaused] = useState(false);
@@ -36,14 +37,15 @@ export default function App() {
   const reducedMotion = useReducedMotion();
   const music = useAmbientMusic();
 
-  function chooseSymbol(symbol: Archetype) {
+  function chooseSymbol(symbol: Archetype, immediate = false) {
     const nextSeed = window.crypto.getRandomValues(new Uint32Array(1))[0];
     const next = makeInspiration(symbol, recentPerspectives.current, nextSeed);
     setSelected(symbol);
     setSeed(nextSeed);
-    setPhase('brewing');
-    setInspiration(null);
-    setPending(next);
+    setPhase(immediate ? 'revealed' : 'brewing');
+    setInspiration(immediate ? next : null);
+    setPending(immediate ? null : next);
+    if (immediate) recentPerspectives.current = [...recentPerspectives.current, next.lensKey];
     setPaused(false);
     music.playChoice(symbol.id, nextSeed);
   }
@@ -63,9 +65,28 @@ export default function App() {
 
   function renew() {
     if (!selected) return;
-    document.getElementById('disque')?.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'start' });
     chooseSymbol(selected);
   }
+
+  function readMetaphor() {
+    const title = document.getElementById('reading-title');
+    title?.focus({ preventScroll: true });
+    title?.scrollIntoView({ behavior: reducedMotion || textOnly ? 'instant' : 'smooth', block: 'start' });
+  }
+
+  function renewReading() {
+    if (!selected) return;
+    focusReadingOnReveal.current = true;
+    chooseSymbol(selected, true);
+  }
+
+  useEffect(() => {
+    if (!inspiration || !focusReadingOnReveal.current) return;
+    focusReadingOnReveal.current = false;
+    const title = document.getElementById('reading-title');
+    title?.focus({ preventScroll: true });
+    title?.scrollIntoView({ behavior: 'instant', block: 'start' });
+  }, [inspiration]);
 
   useEffect(() => {
     const update = () => setOffline(!navigator.onLine);
@@ -86,7 +107,7 @@ export default function App() {
 
   function returnToDisk() {
     const button = document.querySelector<HTMLButtonElement>('.archetype-choice.is-selected');
-    document.getElementById('disque')?.scrollIntoView({ behavior: reducedMotion ? 'instant' : 'smooth', block: 'start' });
+    document.getElementById('disque')?.scrollIntoView({ behavior: reducedMotion || textOnly ? 'instant' : 'smooth', block: 'start' });
     button?.focus({ preventScroll: true });
   }
 
@@ -99,7 +120,7 @@ export default function App() {
         </a>
         <div className="header-actions">
           {selected && <button type="button" className={`music-button ${music.active ? 'is-playing' : ''}`} onClick={music.toggle} aria-pressed={music.active} aria-label={music.active ? 'Couper la musique' : 'Activer la musique'}><UiIcon name="music" /><span>Musique</span></button>}
-          <button type="button" className="help-button" onClick={() => help.current?.showModal()} aria-label="Ouvrir le guide d’utilisation en staff"><UiIcon name="help" /></button>
+          <button type="button" className="help-button" onClick={() => help.current?.showModal()} aria-label="Ouvrir le guide d’utilisation en staff"><UiIcon name="help" /><span>Guide</span></button>
         </div>
       </header>
 
@@ -107,12 +128,18 @@ export default function App() {
         <section className="introduction" aria-labelledby="app-title">
           <h1 id="app-title"><span>La minute</span> d’<em>Intervision Résonante</em><span className="title-sign" aria-hidden="true">•°</span></h1>
           <p className="flash-edition">Version flash métaphorique</p>
+          <p className="journey-intro">Choisissez une image, laissez venir une métaphore, puis ouvrez l’échange.</p>
         </section>
 
-        <ResonanceDisk selected={selected} onSelect={chooseSymbol} onRenew={renew} phase={phase} seed={seed} paused={paused} onTogglePause={() => setPaused(value => !value)} reducedMotion={reducedMotion} textOnly={textOnly} />
+        <div className="reading-comfort" role="group" aria-label="Confort de lecture">
+          <button type="button" className="comfort-button" aria-pressed={collective} onClick={() => setCollective(value => !value)}><UiIcon name="type" />Grands caractères</button>
+          <button type="button" className="comfort-button" aria-pressed={textOnly} onClick={() => setTextOnly(value => !value)}><UiIcon name="text" />Sans animation</button>
+        </div>
+
+        <ResonanceDisk selected={selected} onSelect={chooseSymbol} onRenew={renew} onRead={readMetaphor} phase={phase} seed={seed} paused={paused} onTogglePause={() => setPaused(value => !value)} reducedMotion={reducedMotion} textOnly={textOnly} />
 
         <section id="lecture" className="reading-region" aria-label="Le texte de la métaphore">
-          {inspiration && <ArchetypeReading key={inspiration.id} inspiration={inspiration} onReturn={returnToDisk} onRenew={renew} onSpeaking={music.setSpeaking} />}
+          {inspiration && <ArchetypeReading key={inspiration.id} inspiration={inspiration} onReturn={returnToDisk} onRenew={renewReading} onSpeaking={music.setSpeaking} />}
         </section>
         {music.error && <p className="music-message" role="status">{music.error}</p>}
       </main>
@@ -132,12 +159,7 @@ export default function App() {
             <li><strong>Revenir.</strong> Retrouver la situation. Qu’est-ce qui a changé dans notre manière de la regarder ?</li>
           </ol>
           <p className="help-boundary">La métaphore explore nos résonances de professionnels. Elle n’interprète ni le jeune ni sa famille et ne prescrit aucune conduite.</p>
-          <details className="help-details display-options"><summary>Affichage</summary>
-            <div className="view-controls" role="group" aria-label="Confort de lecture">
-              <button type="button" className={`view-control ${collective ? 'is-active' : ''}`} aria-pressed={collective} onClick={() => setCollective(value => !value)}>Grands caractères</button>
-              <button type="button" className={`view-control ${textOnly ? 'is-active' : ''}`} aria-pressed={textOnly} onClick={() => setTextOnly(value => !value)}>Sans animation</button>
-            </div>
-          </details>
+          <details className="help-details display-options"><summary>Affichage</summary><p>Les boutons « Grands caractères » et « Sans animation », au-dessus du disque, adaptent la lecture à votre confort. Vous pouvez les changer à tout moment. Le son conserve sa commande indépendante.</p></details>
           <details className="help-details"><summary>Ambiance sonore</summary><p>La musique commence dès le choix d’un symbole. Chaque image possède son timbre et sa phrase musicale ; ils évoluent doucement. Le bouton Musique permet de couper ou de reprendre le son. Ce choix est conservé pendant la visite.</p>{selected && <p className="music-description">{musicPalettes[selected.id].name}.</p>}<label className="volume-control" htmlFor="music-volume"><span>Volume musical <output>{Math.round(music.volume * 100)} %</output></span><input id="music-volume" type="range" min="0" max="100" step="1" value={Math.round(music.volume * 100)} onChange={event => music.changeVolume(Number(event.target.value) / 100)} /></label><p>Pendant la lecture vocale, la musique s’efface pour laisser entendre le texte. Elle se suspend lorsque vous quittez l’onglet.</p></details>
           <details className="help-details"><summary>Le jeu des possibles</summary><p>Un seul choix suffit. Touchez un autre symbole pour changer d’image. La flèche circulaire ou « Un autre pas de côté » renouvelle le récit avec le symbole actuel.</p><p>« Et si cette situation ressemblait à… » : une métaphore se déploie, puis une question invite à faire des liens avec la situation évoquée. Chacun peut prolonger l’image à sa manière, lui donner d’autres places ou l’écarter. Les huit récits de chaque symbole sont rencontrés avant un nouveau cycle. L’application ne connaît pas la situation et ne choisit pas sa signification.</p></details>
           <details className="help-details"><summary>Quelques repères</summary><p>Résonance et indisponibilité chez Hartmut Rosa ; jeu et espace potentiel chez Donald Winnicott ; relations et circularité chez Gregory Bateson. Ces inspirations ouvrent des perspectives, sans donner aux symboles une signification universelle.</p><p>Les scènes SVG sont procédurales et remplaçables par vos médias artistiques. La lecture à voix haute dépend des voix disponibles sur l’appareil. Hors ligne, elle nécessite une voix installée localement.</p></details>
