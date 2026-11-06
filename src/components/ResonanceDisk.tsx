@@ -1,17 +1,31 @@
-import type { CSSProperties } from 'react';
+import { useRef } from 'react';
+import type { CSSProperties, KeyboardEvent } from 'react';
 import type { Archetype } from '../data/archetypes';
 import { archetypes } from '../data/archetypes';
 import { emojiSymbols } from '../data/tales';
 
-export function ResonanceDisk({ selected, onToggle, onGenerate, onClear, message }: {
-  selected: Archetype[]; onToggle: (item: Archetype) => void; onGenerate: () => void; onClear: () => void; message: string;
+export function ResonanceDisk({ selected, onSelect, onGenerate, onClear }: {
+  selected: Archetype | null; onSelect: (item: Archetype) => void; onGenerate: () => void; onClear: () => void;
 }) {
+  const buttons = useRef<(HTMLButtonElement | null)[]>([]);
+  function move(event: KeyboardEvent<HTMLButtonElement>, position: number) {
+    let next: number;
+    if (event.key === 'ArrowRight' || event.key === 'ArrowDown') next = (position + 1) % archetypes.length;
+    else if (event.key === 'ArrowLeft' || event.key === 'ArrowUp') next = (position + archetypes.length - 1) % archetypes.length;
+    else if (event.key === 'Home') next = 0;
+    else if (event.key === 'End') next = archetypes.length - 1;
+    else return;
+    event.preventDefault();
+    onSelect(archetypes[next]);
+    buttons.current[next]?.focus();
+  }
+
   return <section id="disque" className="emoji-picker" aria-labelledby="picker-title">
-    <div className="picker-heading"><div><p className="eyebrow">Les images de départ</p><h2 id="picker-title">Choisissez les émojis qui résonnent le plus pour vous avec la situation clinique du moment</h2></div><span className="selection-count">{selected.length} / 3</span></div>
-    <p id="picker-hint">De 1 à 3 émojis. Ils se rencontreront dans le même conte.</p>
-    <div className={`emoji-orbit ${selected.length ? 'has-choices' : ''}`}>
+    <div className="picker-heading"><div><p className="eyebrow">Une image de départ</p><h2 id="picker-title">Choisissez l’émoji qui résonne le plus pour vous avec la situation clinique du moment</h2></div></div>
+    <p id="picker-hint">Un seul émoji, un seul fil pour le conte. Touchez un autre émoji pour changer de choix.</p>
+    <div className={`emoji-orbit ${selected ? 'has-choices' : ''}`}>
       <div className="bubble-disk" aria-hidden="true">
-        <div className="bubble-field" key={selected.map(item => item.id).join('-')}>
+        <div className="bubble-field" key={selected?.id ?? 'idle'}>
           {Array.from({ length: 20 }, (_, index) => <span className="disk-bubble" key={index} style={{
             '--bubble-left': `${8 + (index * 31) % 80}%`,
             '--bubble-top': `${8 + (index * 23) % 78}%`,
@@ -23,23 +37,22 @@ export function ResonanceDisk({ selected, onToggle, onGenerate, onClear, message
         </div>
         <div className="bubble-center"><span>Le pas de côté</span><span className="bubble-sign">•°</span><span>Le pas conté</span></div>
       </div>
-      <div className="orbit-choices" role="group" aria-label="Choisir de 1 à 3 émojis" aria-describedby="picker-hint">
-      {archetypes.map((item, position) => {
-        const index = selected.findIndex(choice => choice.id === item.id);
-        const angle = (position * 30 - 90) * Math.PI / 180;
-        const style = { left: `${50 + 41.4 * Math.cos(angle)}%`, top: `${50 + 41.4 * Math.sin(angle)}%` };
-        return <button style={style} title={item.name} type="button" key={item.id} className={`emoji-choice ${index >= 0 ? 'is-selected' : ''}`} aria-pressed={index >= 0} aria-label={item.name} onClick={() => onToggle(item)}>
-          <span className="emoji-picture" aria-hidden="true">{emojiSymbols[item.id]}</span><span className="orbit-name">{item.name}</span>
-          {index >= 0 && <span className="emoji-check" aria-hidden="true">✓ {index + 1}</span>}
-        </button>;
-      })}
+      <div className="orbit-choices" role="radiogroup" aria-label="Choisir un seul émoji" aria-describedby="picker-hint">
+        {archetypes.map((item, position) => {
+          const active = selected?.id === item.id;
+          const angle = (position * 30 - 90) * Math.PI / 180;
+          const style = { left: `${50 + 41.4 * Math.cos(angle)}%`, top: `${50 + 41.4 * Math.sin(angle)}%` };
+          return <button style={style} title={item.name} type="button" role="radio" key={item.id} ref={element => { buttons.current[position] = element; }} tabIndex={active || (!selected && position === 0) ? 0 : -1} className={`emoji-choice ${active ? 'is-selected' : ''}`} aria-checked={active} aria-label={item.name} onClick={() => onSelect(item)} onKeyDown={event => move(event, position)}>
+            <span className="emoji-picture" aria-hidden="true">{emojiSymbols[item.id]}</span><span className="orbit-name">{item.name}</span>
+            {active && <span className="emoji-check" aria-hidden="true">✓</span>}
+          </button>;
+        })}
       </div>
     </div>
-    <div className="selection-tray"><p>Votre sélection <strong>{selected.length === 0 ? '— à vous de choisir' : `— ${selected.length} image${selected.length > 1 ? 's' : ''}`}</strong></p>
-      <div className="selected-emojis">{selected.map(item => <button key={item.id} type="button" onClick={() => onToggle(item)} aria-label={`Retirer ${item.name}`}><span aria-hidden="true">{emojiSymbols[item.id]}</span>{item.name}<span aria-hidden="true"> ×</span></button>)}</div>
-      {selected.length > 0 && <button type="button" className="clear-selection" onClick={onClear}>Tout effacer</button>}
+    <div className="selection-tray"><p>Votre image <strong>{selected ? `— ${selected.name}` : '— à vous de choisir'}</strong></p>
+      <div className="selected-emojis">{selected && <button type="button" onClick={() => { onClear(); buttons.current[0]?.focus(); }} aria-label={`Retirer ${selected.name}`}><span aria-hidden="true">{emojiSymbols[selected.id]}</span>{selected.name}<span aria-hidden="true"> ×</span></button>}</div>
     </div>
-    <p className="selection-message" role="status" aria-live="polite">{message || (selected.length === 3 ? 'Trois images choisies. Retirez-en une pour en choisir une autre.' : `${selected.length} émoji${selected.length > 1 ? 's' : ''} choisi${selected.length > 1 ? 's' : ''} sur 3.`)}</p>
-    <button type="button" className="generate-button" disabled={selected.length === 0} onClick={onGenerate}>Inspirer un pas de côté et un pas conté <span aria-hidden="true">→</span></button>
+    <p className="selection-message" role="status" aria-live="polite">{selected ? `${selected.name} : votre image pour le conte.` : 'Choisissez un émoji pour commencer.'}</p>
+    <button type="button" className="generate-button" disabled={!selected} onClick={onGenerate}>Inspirer un pas de côté et un pas conté <span aria-hidden="true">→</span></button>
   </section>;
 }

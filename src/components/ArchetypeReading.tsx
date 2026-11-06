@@ -14,8 +14,8 @@ export function ArchetypeReading({ inspiration, onReturn, onRenew, onSpeaking }:
     <article className="archetype-reading tale-reading" aria-labelledby="reading-title">
       <section className="tale-step" aria-labelledby="reading-title">
         <header className="reading-header">
-          <p className="reading-emojis" aria-label={inspiration.archetypes.map(item => item.name).join(', ')}>
-            {inspiration.archetypes.map(item => <span key={item.id} aria-hidden="true">{emojiSymbols[item.id]}</span>)}
+          <p className="reading-emojis" aria-label={inspiration.archetype.name}>
+            <span aria-hidden="true">{emojiSymbols[inspiration.archetype.id]}</span>
           </p>
           <p className="eyebrow">Le pas conté · une histoire à rencontrer</p>
           <h2 id="reading-title" tabIndex={-1}>{inspiration.title}</h2>
@@ -39,10 +39,6 @@ export function ArchetypeReading({ inspiration, onReturn, onRenew, onSpeaking }:
           <div><dt>Dans la pratique</dt><dd>{inspiration.clinicalBridge.practice}</dd></div>
           <div className="bridge-example"><dt>Un exemple fictif en pédopsychiatrie</dt><dd>{inspiration.clinicalBridge.example}</dd></div>
         </dl>
-        {inspiration.otherImages.length > 0 && <div className="other-image-links">
-          <p>Les autres images ouvrent aussi sur…</p>
-          <ul>{inspiration.otherImages.map(item => <li key={item.id}><span aria-hidden="true">{emojiSymbols[item.id]}</span>{item.theme}</li>)}</ul>
-        </div>}
         <ol className="intervision-questions">
           {inspiration.questions.map((question, index) => <li key={question}>
             <span className="question-label">{index === 0 ? 'Ce que cela nous fait vivre' : 'Ce qui reste à entendre'}</span>
@@ -53,8 +49,8 @@ export function ArchetypeReading({ inspiration, onReturn, onRenew, onSpeaking }:
       </section>
       <p className="reading-boundary">Gardez ce qui résonne, déplacez ou écartez le reste. Aucune image n’attribue un rôle au jeune ou à ses proches.</p>
       <div className="reading-end">
-        <button type="button" className="renew-button" onClick={onRenew}>Une autre piste avec ces émojis ↻</button>
-        <button type="button" className="return-button" onClick={onReturn}>Modifier mes émojis ↑</button>
+        <button type="button" className="renew-button" onClick={onRenew}>Une autre piste avec cet émoji <span aria-hidden="true">↻</span></button>
+        <button type="button" className="return-button" onClick={onReturn}>Choisir un autre émoji <span aria-hidden="true">↑</span></button>
       </div>
     </article>
   );

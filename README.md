@@ -3,15 +3,13 @@
 **Le pas de côté métaphorique qui inspire•°**
 
 Un générateur local de métaphores filées et de pistes de conte pour l’intervision
-résonante. Une équipe évoque oralement une situation clinique, choisit **de 1 à 3
-émojis**, puis découvre deux propositions :
+résonante. Une équipe évoque oralement une situation clinique, choisit **un seul émoji**, puis découvre deux propositions :
 
 - **Le pas de côté** : une hypothèse de regard et des questions pour déplacer le récit.
 - **Le pas conté** : deux titres possibles, une trame de conte et une invitation à inventer la suite.
 
-Les images retenues se rencontrent autour d’un passage au bord de l’eau.
-Le premier émoji porte le fil narratif ; les autres font revenir des scènes en
-mémoire qui déplacent le regard de la gardienne, sans quitter la scène de départ.
+Une seule image porte le conte : une scène de départ, une tension et une fin
+écrite pour cette même scène. Aucun souvenir d’un autre émoji n’est ajouté.
 La fin reste ouverte.
 Aucun émoji ne reçoit automatiquement le rôle d’un jeune, d’un proche ou d’un soignant.
 Les métaphores se discutent, se prolongent ou s’écartent. Elles ne posent pas de
@@ -34,10 +32,9 @@ npm run preview
 ```
 
 `check` vérifie TypeScript, les ressources éditoriales, les partitions et les
-**298 combinaisons** de 1 à 3 émojis avec huit variantes chacune. Les tests
-contrôlent la contribution de chaque image, le lien entre le titre, la scène et sa
-fin, les deux questions distinctes, les bornes de sélection, la longueur des récits
-et la reproductibilité. Les cycles sont indépendants pour chaque sélection. `check:pwa` teste le service worker généré,
+**12 choix d’émoji**, chacun avec huit variantes. Les tests contrôlent le lien
+entre titre, scène, fin, exemple clinique et questions. Ils refusent les anciens
+mélanges de plusieurs émojis. `check:pwa` teste le service worker généré,
 la navigation et les ressources hors ligne en simulation.
 
 `dist/` est un site statique autonome, à servir en HTTPS ou sur localhost,
@@ -45,20 +42,20 @@ la navigation et les ressources hors ligne en simulation.
 
 ## Parcours
 
-1. Choisir entre un et trois émojis. Les émojis sont disposés en cercle autour d’un disque de bulles animées. Les boutons sélectionnés sont colorés,
-   cochées et numérotées. La sélection est aussi affichée sous la grille.
-2. Retoucher une carte ou sa pastille pour la retirer ; **Tout effacer** repart de zéro.
-   Un quatrième choix ne remplace aucun choix existant.
-3. **Inspirer un pas de côté et un pas conté** compose la proposition et place le
-   focus clavier sur le titre du récit. La génération est indisponible sans émoji.
-   Le conte vient d’abord. Un pont pédagogique relie ensuite l’image à la pratique
-   avec un exemple fictif, avant les deux questions et le retour à la situation.
-   **Prolonger ou renommer le conte** ouvre une invitation narrative et un autre titre.
-4. **Une autre piste avec ces émojis** renouvelle les variantes avec les images
-   du récit affiché. **Modifier mes émojis** ramène au sélecteur.
+1. Choisir **un seul émoji** autour du disque de bulles. Le choix actif est
+   coloré, coché et repris sous le disque. Toucher un autre émoji le remplace.
+2. **Inspirer un pas de côté et un pas conté** compose la proposition et place le
+   focus clavier sur le titre du récit. La génération est indisponible sans choix.
+3. Le conte vient d’abord, puis son lien avec la pratique, un exemple fictif,
+   deux questions courtes et un retour à la situation. **Prolonger ou renommer
+   le conte** ouvre une invitation narrative et un autre titre.
+4. **Une autre piste avec cet émoji** renouvelle le récit affiché.
+   **Choisir un autre émoji** ramène au disque. Les flèches du clavier changent
+   le choix ; Début et Fin rejoignent le premier et le dernier émoji.
 
-Une sélection modifiée ne change pas silencieusement le texte déjà affiché :
-un message invite à générer une nouvelle piste. Le récit garde ses émojis d’origine.
+Changer de choix ne modifie pas silencieusement le texte déjà affiché : un
+message invite à générer un nouveau conte. Le récit garde son émoji d’origine.
+Le bouton × de la pastille retire le choix.
 
 Les bulles sont animées en CSS, sans scène SVG dans le disque. La préférence
 système de réduction des mouvements affiche une composition fixe.
@@ -68,8 +65,7 @@ le guide. Les préférences et sélections restent en mémoire pendant la visite
 ## Composition et personnalisation
 
 `src/data/narratives.ts` contient **24 noyaux narratifs**, 48 titres et 96 fins
-liées à leur scène. Les récits composés font de 90 à 236 mots, selon les images
-et la variante. La durée affichée est une estimation de lecture, sans compte à rebours.
+liées à leur scène. Chaque récit contient exactement trois paragraphes liés. La durée affichée est une estimation de lecture, sans compte à rebours.
 
 `src/data/clinicalLenses.ts` contient **12 regards d’intervision** : éprouvés de
 l’équipe, relations, temporalités, soutiens, transmissions, continuité famille–école–soins.
@@ -80,17 +76,15 @@ n’assignent aucun rôle clinique aux images et ne constituent pas une validati
 `src/data/clinicalBridges.ts` relie chacune des **24 scènes** à la pratique :
 ce qui se joue dans le conte, ce que cela peut évoquer dans le soin, et un exemple
 fictif en pédopsychiatrie. Ce lien suit la scène réellement tirée, même lorsque
-le titre change. Les images supplémentaires donnent aussi de courtes pistes
-pour élargir la lecture. Il s’agit de lectures possibles, sans correspondance
+le titre change. Il s’agit de lectures possibles, sans correspondance
 fixe entre un personnage et une personne de la situation. Les deux questions et
 le retour à la situation suivent aussi la variante affichée. Les questions restent
-courtes (14 mots au maximum), même avec plusieurs émojis.
+courtes (14 mots au maximum).
 
-`src/data/tales.ts` compose ces ressources : scène et tension du premier émoji,
-souvenirs liés aux images supplémentaires, retour à une fin de la même scène.
-L’ordre de sélection est conservé. Chaque sélection ordonnée a son propre cycle
-de huit variantes sans répétition ; un nouveau cycle évite ses trois dernières
-lectures, même si d’autres sélections ont été utilisées entre-temps.
+`src/data/tales.ts` accepte un objet `Archetype` unique et refuse les listes.
+Il compose exclusivement l’ouverture, la tension et l’une des fins de la même
+scène. Chaque émoji a son propre cycle de huit variantes ; un nouveau cycle évite
+les trois dernières lectures de cet émoji, même après un changement de choix.
 
 Le générateur utilise des textes écrits ; sa variété est finie. Il ne lit ni
 n’analyse la situation clinique évoquée par l’équipe. Les 96 métaphores de
@@ -101,7 +95,7 @@ actuel ne les utilise pas.
 
 ## Son, accessibilité et données
 
-Une ambiance Web Audio commence à la génération, selon le premier émoji choisi.
+Une ambiance Web Audio commence à la génération, selon l’émoji choisi.
 Le bouton **Musique** coupe ou reprend le son et respecte la coupure pendant la
 visite. Le volume diminue pendant la lecture vocale et la musique se suspend
 lorsque l’onglet est masqué. Aucun téléchargement musical ni micro.

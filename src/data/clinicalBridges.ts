@@ -218,10 +218,3 @@ export const clinicalBridges: Record<ArchetypeId, [ClinicalBridge, ClinicalBridg
     },
   ],
 };
-
-export const imageThemes: Record<ArchetypeId, string> = {
-  noeud: 'les tensions dans les liens', barque: 'les attentes de chacun', roseau: 'les effets du contexte',
-  mycelium: 'les soutiens discrets', graine: 'le temps du changement', cage: 'les appuis du premier pas',
-  phare: 'ce qui attire notre attention', riviere: 'la suite des interactions', cercles: 'les points de vue différents',
-  fissure: 'les effets d’une rupture', plume: 'les mots et les émotions de l’équipe', pierres: 'ceux qui soutiennent le quotidien',
-};

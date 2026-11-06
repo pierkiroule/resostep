@@ -2,7 +2,7 @@ import type { Archetype, ArchetypeId } from './archetypes';
 import { seededRandom } from './resonance';
 import { narratives } from './narratives';
 import { clinicalLenses } from './clinicalLenses';
-import { clinicalBridges, imageThemes } from './clinicalBridges';
+import { clinicalBridges } from './clinicalBridges';
 import type { ClinicalBridge } from './clinicalBridges';
 
 export const emojiSymbols: Record<ArchetypeId, string> = {
@@ -13,13 +13,12 @@ export const emojiSymbols: Record<ArchetypeId, string> = {
 export interface TaleInspiration {
   id: string;
   lensKey: string;
-  archetypes: Archetype[];
+  archetype: Archetype;
   title: string;
   alternativeTitle: string;
   paragraphs: string[];
   sideStepTitle: string;
   clinicalBridge: ClinicalBridge;
-  otherImages: { id: ArchetypeId; theme: string }[];
   questions: [string, string];
   invitation: string;
   storyInvitation: string;
@@ -32,17 +31,15 @@ const invitations = [
   'Reprenez le conte le lendemain. Qu’est-ce qui a changé ?',
 ];
 
-/** Une scène, une tension, des rencontres qui la déplacent et un retour à la même scène. */
-export function makeTale(selected: Archetype[], recent: string[], seed: number): TaleInspiration {
-  if (!Array.isArray(selected) || selected.length < 1 || selected.length > 3 ||
-    selected.some(item => !item || !Object.hasOwn(narratives, item.id)) ||
-    new Set(selected.map(item => item.id)).size !== selected.length) {
-    throw new Error('Choisissez de 1 à 3 émojis différents.');
+/** Un seul émoji : une scène, sa tension et une fin écrite pour ce même récit. */
+export function makeTale(archetype: Archetype, recent: string[], seed: number): TaleInspiration {
+  if (!archetype || Array.isArray(archetype) || !Object.hasOwn(narratives, archetype.id)) {
+    throw new Error('Choisissez un seul émoji.');
   }
   if (!Number.isFinite(seed)) throw new Error('La graine du tirage doit être un nombre fini.');
   const random = seededRandom(seed);
-  // Chaque combinaison ordonnée a son propre cycle : changer une image ne consomme pas celui d’une autre.
-  const prefix = `conte:${selected.map(item => item.id).join('+')}:`;
+  // Chaque émoji a son propre cycle, conservé lorsqu’on change d’image.
+  const prefix = `conte:${archetype.id}:`;
   const candidates = Array.from({ length: 8 }, (_, variant) => `${prefix}${variant}`);
   const keys = new Set(candidates);
   const history = recent.filter(key => keys.has(key));
@@ -59,26 +56,18 @@ export function makeTale(selected: Archetype[], recent: string[], seed: number):
   const variant = Number(lensKey.slice(prefix.length));
   const coreIndex = variant < 4 ? 0 : 1;
   const endingIndex = variant % 4;
-  const primary = selected[0].id;
+  const primary = archetype.id;
   const story = narratives[primary][coreIndex];
   const lens = clinicalLenses[primary];
   const bridge = clinicalBridges[primary][coreIndex];
   const focus = bridge.focus ?? lens;
-  const encounters = selected.slice(1).map((item, index) => {
-    const echo = clinicalLenses[item.id].echoes[(variant + index) % 2];
-    // Les échos sont des souvenirs : la gardienne reste dans sa scène, même si elle est en barque ou dans le phare.
-    return `${index === 0 ? 'Avant de reprendre son geste, une scène lui revient en mémoire. ' : 'Un autre souvenir se mêle au premier. '}${echo}`;
-  });
-  const ending = `${encounters.length ? lens.returns[coreIndex] + ' ' : ''}${story.endings[endingIndex]}`;
-  // Les questions suivent la scène principale, plutôt qu’un autre émoji tiré au hasard.
   return {
-    id: `${seed}-${lensKey}`, lensKey, archetypes: [...selected],
+    id: `${seed}-${lensKey}`, lensKey, archetype,
     title: endingIndex % 2 ? story.otherTitle : story.title,
     alternativeTitle: endingIndex % 2 ? story.title : story.otherTitle,
-    paragraphs: [story.opening, story.tension, ...encounters, ending],
+    paragraphs: [story.opening, story.tension, story.endings[endingIndex]],
     sideStepTitle: focus.title,
     clinicalBridge: bridge,
-    otherImages: selected.slice(1).map(item => ({ id: item.id, theme: imageThemes[item.id] })),
     questions: [...focus.questions],
     invitation: focus.returnToSituation,
     storyInvitation: invitations[endingIndex],
