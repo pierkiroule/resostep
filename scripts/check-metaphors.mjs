@@ -12,8 +12,10 @@ const lensUrl = await moduleUrl('src/data/clinicalLenses.ts');
 const linkUrl = await moduleUrl('src/data/clinicalLinks.ts');
 const { clinicalLenses } = await import(lensUrl);
 const { clinicalLinks } = await import(linkUrl);
+const tagsUrl = await moduleUrl('src/data/explorationTags.ts');
+const { emojiExplorations, explorationTags } = await import(tagsUrl);
 const { makeMetaphor, emojiSymbols, metaphorTexts } = await import(await moduleUrl('src/data/metaphors.ts', {
-  './resonance': await moduleUrl('src/data/resonance.ts'), './clinicalLenses': lensUrl, './clinicalLinks': linkUrl,
+  './resonance': await moduleUrl('src/data/resonance.ts'), './clinicalLenses': lensUrl, './clinicalLinks': linkUrl, './explorationTags': tagsUrl,
 }));
 assert.equal(new Set(Object.values(emojiSymbols)).size, 12);
 const seenTexts = new Set();
@@ -49,8 +51,37 @@ for (const archetype of archetypes) {
   assert.equal(seen.size, variations.length);
   for(const text of variations) { assert(!seenTexts.has(text)); seenTexts.add(text); }
 }
+let taggedCases = 0;
+for (const archetype of archetypes) {
+  assert.equal(new Set(emojiExplorations[archetype.id].map(option => option.tag)).size, 3);
+  for (const option of emojiExplorations[archetype.id]) {
+    const history = [];
+    const seen = new Set();
+    for (let seed = 0; seed < 4; seed++) {
+      const result = makeMetaphor(archetype, history, seed, option.tag);
+      assert.equal(result.exploration, option.tag);
+      assert(result.metaphor.endsWith(option.extension));
+      const validTexts = metaphorTexts[archetype.id].filter((_, index) => index % 2 === option.angle);
+      assert(validTexts.some(text => result.metaphor === text + ' ' + option.extension));
+      assert.equal(result.clinicalLink, clinicalLinks[archetype.id][option.angle].practice + ' ' + explorationTags[option.tag].practice);
+      assert.deepEqual(result.questions, [explorationTags[option.tag].question, option.question]);
+      assert.equal(new Set(result.questions).size, 2);
+      assert(result.questions.every(q => q.endsWith('?') && q.trim().split(/\s+/).length <= 14));
+      if (seed < 2) { assert(!seen.has(result.lensKey)); seen.add(result.lensKey); }
+      if (history.length) assert.notEqual(result.lensKey, history.at(-1));
+      const open = makeMetaphor(archetype, [], seed);
+      assert.deepEqual(makeMetaphor(archetype, [...history, open.lensKey], seed, option.tag), result, 'Cycles des tags et du choix ouvert indépendants');
+      history.push(result.lensKey);
+    }
+    assert.equal(seen.size, 2);
+    taggedCases++;
+  }
+}
+assert.equal(taggedCases, 36);
+assert.throws(() => makeMetaphor(archetypes[0], [], 1, 'inconnu'), /angle proposé/);
+assert.throws(() => makeMetaphor(archetypes[0], [], 1, 'relais'), /angle proposé/);
 assert.throws(() => makeMetaphor(archetypes.slice(0,3), [], 1), /un seul émoji/);
 assert.throws(() => makeMetaphor(null, [], 1), /un seul émoji/);
 assert.throws(() => makeMetaphor({id:'constructor'}, [], 1), /un seul émoji/);
 assert.throws(() => makeMetaphor(archetypes[0], [], NaN), /fini/);
-console.log(`Métaphores : ${seenTexts.size} textes courts, 12 émojis, liens cliniques et 2 questions courtes par angle. Cycles indépendants et absence de conte vérifiés.`);
+console.log(`Métaphores : ${seenTexts.size} textes courts, 12 émojis, liens cliniques et 2 questions courtes par angle. 36 associations émoji–tag, choix ouvert, cycles indépendants et absence de conte vérifiés.`);

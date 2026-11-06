@@ -1,6 +1,7 @@
 import type { MetaphorInspiration } from '../data/metaphors';
 import { emojiSymbols } from '../data/metaphors';
 import { VoicePlayer } from './VoicePlayer';
+import { explorationLabel } from '../data/explorationTags';
 
 export function ArchetypeReading({ inspiration, onReturn, onRenew, onSpeaking }: {
   inspiration: MetaphorInspiration;
@@ -12,6 +13,7 @@ export function ArchetypeReading({ inspiration, onReturn, onRenew, onSpeaking }:
     <header className="reading-header">
       <p className="reading-emojis" aria-label={inspiration.archetype.name}><span aria-hidden="true">{emojiSymbols[inspiration.archetype.id]}</span></p>
       <p className="eyebrow">Le pas de côté métaphorique</p>
+      <p className="result-exploration">Angle : {explorationLabel(inspiration.exploration)}</p>
       <h2 id="reading-title" tabIndex={-1}>{inspiration.title}</h2>
       <VoicePlayer readingId={inspiration.id} paragraphs={[inspiration.title, inspiration.metaphor, inspiration.clinicalLink, ...inspiration.questions]} onPlayingChange={onSpeaking} />
     </header>

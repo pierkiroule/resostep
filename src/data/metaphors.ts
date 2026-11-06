@@ -2,6 +2,8 @@ import type { Archetype, ArchetypeId } from './archetypes';
 import { seededRandom } from './resonance';
 import { clinicalLenses } from './clinicalLenses';
 import { clinicalLinks } from './clinicalLinks';
+import { emojiExplorations, explorationTags } from './explorationTags';
+import type { ExplorationChoice } from './explorationTags';
 
 export const emojiSymbols: Record<ArchetypeId, string> = {
   noeud: '🪢', barque: '⛵', roseau: '🌾', mycelium: '🍄', graine: '🌱', cage: '🕊️',
@@ -88,33 +90,37 @@ export interface MetaphorInspiration {
   id: string;
   lensKey: string;
   archetype: Archetype;
+  exploration: ExplorationChoice;
   title: string;
   metaphor: string;
   clinicalLink: string;
   questions: [string, string];
 }
 
-export function makeMetaphor(archetype: Archetype, recent: string[], seed: number): MetaphorInspiration {
+export function makeMetaphor(archetype: Archetype, recent: string[], seed: number, exploration: ExplorationChoice = 'open'): MetaphorInspiration {
   if (!archetype || Array.isArray(archetype) || !Object.hasOwn(metaphorTexts, archetype.id)) {
     throw new Error('Choisissez un seul émoji.');
   }
   if (!Number.isFinite(seed)) throw new Error('La graine du tirage doit être un nombre fini.');
+  const option = exploration === 'open' ? null : emojiExplorations[archetype.id].find(item => item.tag === exploration);
+  if (exploration !== 'open' && !option) throw new Error('Choisissez un angle proposé pour cet émoji.');
   const texts = metaphorTexts[archetype.id];
-  const keys = texts.map((_, index) => `metaphore:${archetype.id}:${index}`);
+  const candidates = texts.map((_, index) => index).filter(index => !option || index % 2 === option.angle);
+  const keys = candidates.map(index => `metaphore:${archetype.id}:${exploration}:${index}`);
   const history = recent.filter(key => keys.includes(key));
   const usedCount = history.length % keys.length;
   const used = new Set(usedCount ? history.slice(-usedCount) : []);
   const available = keys.filter(key => !used.has(key) && key !== history.at(-1));
   const random = seededRandom(seed);
   const lensKey = available[Math.floor(random() * available.length)];
-  const index = keys.indexOf(lensKey);
+  const index = candidates[keys.indexOf(lensKey)];
   const link = clinicalLinks[archetype.id][index % 2];
   const focus = link.focus ?? clinicalLenses[archetype.id];
   return {
-    id: `${seed}-${lensKey}`, lensKey, archetype,
+    id: `${seed}-${lensKey}`, lensKey, archetype, exploration,
     title: focus.title,
-    metaphor: metaphorTexts[archetype.id][index],
-    clinicalLink: link.practice,
-    questions: [...focus.questions],
+    metaphor: texts[index] + (option ? ` ${option.extension}` : ''),
+    clinicalLink: link.practice + (option ? ` ${explorationTags[option.tag].practice}` : ''),
+    questions: option ? [explorationTags[option.tag].question, option.question] : [...focus.questions],
   };
 }

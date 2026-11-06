@@ -1,13 +1,17 @@
-import { useRef } from 'react';
+import { useId, useRef } from 'react';
 import type { CSSProperties, KeyboardEvent } from 'react';
 import type { Archetype } from '../data/archetypes';
 import { archetypes } from '../data/archetypes';
 import { emojiSymbols } from '../data/metaphors';
 import { artDirection } from '../data/artDirection';
+import { emojiExplorations, explorationTags, explorationLabel } from '../data/explorationTags';
+import type { ExplorationChoice } from '../data/explorationTags';
 
-export function ResonanceDisk({ selected, onSelect, onGenerate, onClear }: {
+export function ResonanceDisk({ selected, exploration, onSelect, onExplorationChange, onGenerate, onClear }: {
   selected: Archetype | null; onSelect: (item: Archetype) => void; onGenerate: () => void; onClear: () => void;
+  exploration: ExplorationChoice; onExplorationChange: (choice: ExplorationChoice) => void;
 }) {
+  const tagGroup = useId();
   const buttons = useRef<(HTMLButtonElement | null)[]>([]);
   const palette = artDirection[selected?.id ?? 'noeud'];
   const colors = { '--disk-color-a': palette[0], '--disk-color-b': palette[1], '--disk-color-c': palette[2] } as CSSProperties;
@@ -25,7 +29,7 @@ export function ResonanceDisk({ selected, onSelect, onGenerate, onClear }: {
 
   return <section id="disque" className="emoji-picker" aria-labelledby="picker-title">
     <div className="picker-heading"><div><p className="eyebrow">Une image de départ</p><h2 id="picker-title">Choisissez l’émoji qui résonne le plus pour vous avec la situation clinique du moment</h2></div></div>
-    <p id="picker-hint">Un seul émoji pour déplier une métaphore. Touchez un autre émoji pour changer de choix.</p>
+    <p id="picker-hint">{selected ? 'Au centre, choisissez ce que vous souhaitez explorer, ou laissez ouvert.' : 'Choisissez un émoji : des tags apparaîtront au centre pour préciser votre regard.'}</p>
     <div className={`emoji-orbit ${selected ? 'has-choices' : ''}`} style={colors}>
       <div className="bubble-disk" aria-hidden="true">
         <div className="bubble-field" key={selected?.id ?? 'idle'}>
@@ -48,7 +52,7 @@ export function ResonanceDisk({ selected, onSelect, onGenerate, onClear }: {
             '--bubble-drift': `${index % 2 ? 12 : -12}px`,
           } as CSSProperties} />)}
         </div>
-        <div className="bubble-center"><span>Un pas de côté</span><span className="bubble-sign">•°</span><span>Une image pour penser</span></div>
+        {!selected && <div className="bubble-center"><span>Un pas de côté</span><span className="bubble-sign">•°</span><span>Une image pour penser</span></div>}
       </div>
       <div className="orbit-choices" role="radiogroup" aria-label="Choisir un seul émoji" aria-describedby="picker-hint">
         {archetypes.map((item, position) => {
@@ -61,9 +65,20 @@ export function ResonanceDisk({ selected, onSelect, onGenerate, onClear }: {
           </button>;
         })}
       </div>
+      {selected && <div className="disk-tags" key={`tags-${selected.id}`}>
+        <p id={`${tagGroup}-title`}>Qu’explorer ?</p>
+        <div className="disk-tag-options" role="radiogroup" aria-labelledby={`${tagGroup}-title`}>
+          {emojiExplorations[selected.id].map(option => <label className="disk-tag" key={option.tag}>
+            <input type="radio" name={tagGroup} value={option.tag} checked={exploration === option.tag} onChange={() => onExplorationChange(option.tag)} />
+            <span>{explorationTags[option.tag].label}</span>
+          </label>)}
+          <label className="disk-tag open-tag"><input type="radio" name={tagGroup} value="open" aria-label="Laisser ouvert" checked={exploration === 'open'} onChange={() => onExplorationChange('open')} /><span>Ouvert</span></label>
+        </div>
+      </div>}
     </div>
     <div className="selection-tray"><p>Votre image <strong>{selected ? `— ${selected.name}` : '— à vous de choisir'}</strong></p>
       <div className="selected-emojis">{selected && <button type="button" onClick={() => { onClear(); buttons.current[0]?.focus(); }} aria-label={`Retirer ${selected.name}`}><span aria-hidden="true">{emojiSymbols[selected.id]}</span>{selected.name}<span aria-hidden="true"> ×</span></button>}</div>
+      {selected && <p className="exploration-selection">Angle : {explorationLabel(exploration)}</p>}
     </div>
     <p className="selection-message" role="status" aria-live="polite">{selected ? `${selected.name} : votre image pour réfléchir.` : 'Choisissez un émoji pour commencer.'}</p>
     <button type="button" className="generate-button" disabled={!selected} onClick={onGenerate}>Inspirer un pas de côté <span aria-hidden="true">→</span></button>

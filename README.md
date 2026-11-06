@@ -3,7 +3,8 @@
 **Le pas de côté métaphorique !**
 
 Une équipe évoque oralement une situation clinique, puis choisit **un seul émoji**.
-L’application propose une métaphore filée courte, un lien possible avec la pratique
+Des tags apparaissent au centre du disque pour choisir un angle facultatif.
+L’application propose ensuite une métaphore filée courte, un lien possible avec la pratique
 et **deux questions simples** pour l’intervision en pédopsychiatrie.
 
 L’image se prolonge sans conte, personnage ni dénouement. Elle n’attribue aucun rôle
@@ -28,16 +29,20 @@ npm run preview
 
 `check` vérifie TypeScript, les ressources éditoriales, les partitions et les
 48 métaphores : un seul choix, cycles sans répétition, liens cliniques et questions
-associés au bon angle. Les deux questions restent limitées à 14 mots chacune.
+associés au bon angle, ainsi que les 36 associations entre émojis et tags. Les deux questions restent limitées à 14 mots chacune.
 `check:pwa` teste le service worker généré et les ressources hors ligne en simulation.
 
 ## Parcours
 
 1. Choisir un émoji autour du disque. Le choix actif est coché et repris sous le
    disque. Toucher un autre émoji le remplace ; le bouton × le retire.
-2. **Inspirer un pas de côté** affiche une métaphore, un lien possible avec la
+2. Au centre du disque, choisir l’un des **trois tags adaptés à l’image**, ou
+   **Ouvert** pour continuer sans angle précis. Les tags portent sur les émotions,
+   les liens, les regards, le rythme, les appuis ou les relais. Changer d’émoji
+   remet l’angle sur « Ouvert ».
+3. **Inspirer un pas de côté** affiche une métaphore, un lien possible avec la
    clinique et deux questions. Le focus clavier rejoint le titre.
-3. **Un autre angle avec cet émoji** renouvelle la métaphore.
+4. **Un autre angle avec cet émoji** renouvelle la métaphore.
    **Choisir un autre émoji** ramène au disque.
 
 Un changement de choix ne modifie pas silencieusement le texte affiché : un message
@@ -49,7 +54,16 @@ parcourir les émojis au clavier. Échap ferme le guide.
 `src/data/metaphors.ts` contient **48 métaphores filées**, quatre par émoji.
 Chaque image est développée en un paragraphe court. Les quatre variantes sont
 rencontrées avant un nouveau cycle ; la dernière n’est pas répétée au début du
-cycle suivant. Chaque émoji conserve son cycle quand on change de choix.
+cycle suivant. Chaque émoji conserve son cycle quand on change de choix. Un tag retient les deux
+variantes du thème clinique correspondant et développe l’image avec une phrase
+spécifique. Chaque association émoji–tag a un cycle indépendant.
+
+`src/data/explorationTags.ts` définit six angles de réflexion et trois propositions
+par émoji (36 associations). Chaque association comporte un développement de
+l’image et une question spécifique. Le tag agit sur le texte, le lien clinique
+et les questions ; il ne classe pas une situation et ne recueille aucune donnée
+clinique. Le résultat affiche l’angle utilisé. Un choix d’image ou de tag modifié
+ne change pas le texte déjà affiché : il faut générer une nouvelle proposition.
 
 `src/data/clinicalLinks.ts` et `src/data/clinicalLenses.ts` relient ces images à
 la pratique : liens, éprouvés de l’équipe, temporalités, soutiens, transmissions,
