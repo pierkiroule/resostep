@@ -70,7 +70,7 @@ assert(stores.has('autre-application'));
 online = false;
 const navigation = await request(root, 'navigate');
 assert(navigation.ok);
-assert.match(await navigation.text(), /le pas de côté métaphorique qui inspire/);
+assert.match(await navigation.text(), /Le pas de côté métaphorique !/);
 const current = [...stores.entries()].find(([name]) => name.startsWith('pas-de-cote-'));
 const assets = [...current[1].keys()];
 assert(assets.some(path => path.endsWith('.js')));

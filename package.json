@@ -7,7 +7,7 @@
     "dev": "vite --host 0.0.0.0",
     "build": "tsc -b && vite build && node scripts/build-sw.mjs",
     "preview": "vite preview --host 0.0.0.0",
-    "check": "tsc -b && node scripts/check-content.mjs && node scripts/check-resonance.mjs && node scripts/check-score.mjs && node scripts/check-tales.mjs",
+    "check": "tsc -b && node scripts/check-content.mjs && node scripts/check-resonance.mjs && node scripts/check-score.mjs && node scripts/check-metaphors.mjs",
     "check:pwa": "node scripts/check-pwa.mjs"
   },
   "dependencies": {

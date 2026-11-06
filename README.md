@@ -1,21 +1,16 @@
-# La minute d’Intervision Résonante
+# La minute de l’Intervision Résonante :
 
-**Le pas de côté métaphorique qui inspire•°**
+**Le pas de côté métaphorique !**
 
-Un générateur local de métaphores filées et de pistes de conte pour l’intervision
-résonante. Une équipe évoque oralement une situation clinique, choisit **un seul émoji**, puis découvre deux propositions :
+Une équipe évoque oralement une situation clinique, puis choisit **un seul émoji**.
+L’application propose une métaphore filée courte, un lien possible avec la pratique
+et **deux questions simples** pour l’intervision en pédopsychiatrie.
 
-- **Le pas de côté** : une hypothèse de regard et des questions pour déplacer le récit.
-- **Le pas conté** : deux titres possibles, une trame de conte et une invitation à inventer la suite.
+L’image se prolonge sans conte, personnage ni dénouement. Elle n’attribue aucun rôle
+au jeune, à ses proches ou aux professionnels. Les liens proposés se discutent,
+se déplacent ou s’écartent ; ils ne constituent ni diagnostic ni prescription.
 
-Une seule image porte le conte : une scène de départ, une tension et une fin
-écrite pour cette même scène. Aucun souvenir d’un autre émoji n’est ajouté.
-La fin reste ouverte.
-Aucun émoji ne reçoit automatiquement le rôle d’un jeune, d’un proche ou d’un soignant.
-Les métaphores se discutent, se prolongent ou s’écartent. Elles ne posent pas de
-diagnostic et ne recommandent aucune conduite thérapeutique.
-
-## Installation et vérifications
+## Installation
 
 Node.js **24.x** et npm. Aucun backend, secret ou service d’IA.
 
@@ -32,94 +27,70 @@ npm run preview
 ```
 
 `check` vérifie TypeScript, les ressources éditoriales, les partitions et les
-**12 choix d’émoji**, chacun avec huit variantes. Les tests contrôlent le lien
-entre titre, scène, fin, exemple clinique et questions. Ils refusent les anciens
-mélanges de plusieurs émojis. `check:pwa` teste le service worker généré,
-la navigation et les ressources hors ligne en simulation.
-
-`dist/` est un site statique autonome, à servir en HTTPS ou sur localhost,
-à la racine ou dans un sous-répertoire. Les fichiers ne se lancent pas en `file://`.
+48 métaphores : un seul choix, cycles sans répétition, liens cliniques et questions
+associés au bon angle. Les deux questions restent limitées à 14 mots chacune.
+`check:pwa` teste le service worker généré et les ressources hors ligne en simulation.
 
 ## Parcours
 
-1. Choisir **un seul émoji** autour du disque de bulles. Le choix actif est
-   coloré, coché et repris sous le disque. Toucher un autre émoji le remplace.
-2. **Inspirer un pas de côté et un pas conté** compose la proposition et place le
-   focus clavier sur le titre du récit. La génération est indisponible sans choix.
-3. Le conte vient d’abord, puis son lien avec la pratique, un exemple fictif,
-   deux questions courtes et un retour à la situation. **Prolonger ou renommer
-   le conte** ouvre une invitation narrative et un autre titre.
-4. **Une autre piste avec cet émoji** renouvelle le récit affiché.
-   **Choisir un autre émoji** ramène au disque. Les flèches du clavier changent
-   le choix ; Début et Fin rejoignent le premier et le dernier émoji.
+1. Choisir un émoji autour du disque. Le choix actif est coché et repris sous le
+   disque. Toucher un autre émoji le remplace ; le bouton × le retire.
+2. **Inspirer un pas de côté** affiche une métaphore, un lien possible avec la
+   clinique et deux questions. Le focus clavier rejoint le titre.
+3. **Un autre angle avec cet émoji** renouvelle la métaphore.
+   **Choisir un autre émoji** ramène au disque.
 
-Changer de choix ne modifie pas silencieusement le texte déjà affiché : un
-message invite à générer un nouveau conte. Le récit garde son émoji d’origine.
-Le bouton × de la pastille retire le choix.
+Un changement de choix ne modifie pas silencieusement le texte affiché : un message
+invite à proposer une nouvelle métaphore. Les flèches, Début et Fin permettent de
+parcourir les émojis au clavier. Échap ferme le guide.
 
-Les bulles sont animées en CSS, sans scène SVG dans le disque. La préférence
-système de réduction des mouvements affiche une composition fixe.
-Le guide détaille le rituel et permet de régler le volume musical. Échap ferme
-le guide. Les préférences et sélections restent en mémoire pendant la visite.
+## Répertoire et composition
 
-## Composition et personnalisation
+`src/data/metaphors.ts` contient **48 métaphores filées**, quatre par émoji.
+Chaque image est développée en un paragraphe court. Les quatre variantes sont
+rencontrées avant un nouveau cycle ; la dernière n’est pas répétée au début du
+cycle suivant. Chaque émoji conserve son cycle quand on change de choix.
 
-`src/data/narratives.ts` contient **24 noyaux narratifs**, 48 titres et 96 fins
-liées à leur scène. Chaque récit contient exactement trois paragraphes liés. La durée affichée est une estimation de lecture, sans compte à rebours.
+`src/data/clinicalLinks.ts` et `src/data/clinicalLenses.ts` relient ces images à
+la pratique : liens, éprouvés de l’équipe, temporalités, soutiens, transmissions,
+points de vue et continuité des soins. Deux variantes d’image partagent un même
+angle clinique. Le générateur ne lit ni n’analyse la situation évoquée.
+La variété des textes écrits est finie.
 
-`src/data/clinicalLenses.ts` contient **12 regards d’intervision** : éprouvés de
-l’équipe, relations, temporalités, soutiens, transmissions, continuité famille–école–soins.
-Chaque regard fournit une hypothèse, une question sur les éprouvés, une question
-relationnelle et une invitation à revenir à un épisode concret. Ces textes
-n’assignent aucun rôle clinique aux images et ne constituent pas une validation clinique.
+Les anciens contes et leur moteur ont été retirés. Les textes de référence de
+`src/data/resonance.ts` et `src/data/archetypes.ts` restent des ressources
+éditoriales distinctes du répertoire affiché.
 
-`src/data/clinicalBridges.ts` relie chacune des **24 scènes** à la pratique :
-ce qui se joue dans le conte, ce que cela peut évoquer dans le soin, et un exemple
-fictif en pédopsychiatrie. Ce lien suit la scène réellement tirée, même lorsque
-le titre change. Il s’agit de lectures possibles, sans correspondance
-fixe entre un personnage et une personne de la situation. Les deux questions et
-le retour à la situation suivent aussi la variante affichée. Les questions restent
-courtes (14 mots au maximum).
+## Disque, son et accessibilité
 
-`src/data/tales.ts` accepte un objet `Archetype` unique et refuse les listes.
-Il compose exclusivement l’ouverture, la tension et l’une des fins de la même
-scène. Chaque émoji a son propre cycle de huit variantes ; un nouveau cycle évite
-les trois dernières lectures de cet émoji, même après un changement de choix.
+La sélection déclenche une éclosion de pigments, des ondes lumineuses et des
+particules dans le disque. Les couleurs suivent l’émoji choisi. Les bulles et un
+ruban de lumière évoluent doucement ensuite. Ces effets sont en CSS, sans scène
+SVG ni média distant. La réduction des mouvements du système garde une composition
+fixe et masque les ondes et particules de sélection.
 
-Le générateur utilise des textes écrits ; sa variété est finie. Il ne lit ni
-n’analyse la situation clinique évoquée par l’équipe. Les 96 métaphores de
-`src/data/resonance.ts` et les textes longs de `src/data/archetypes.ts` restent
-disponibles comme ressources éditoriales, séparées du corpus de contes affiché.
-Les anciennes scènes SVG restent disponibles dans les composants ; le disque
-actuel ne les utilise pas.
-
-## Son, accessibilité et données
-
-Une ambiance Web Audio commence à la génération, selon l’émoji choisi.
-Le bouton **Musique** coupe ou reprend le son et respecte la coupure pendant la
-visite. Le volume diminue pendant la lecture vocale et la musique se suspend
-lorsque l’onglet est masqué. Aucun téléchargement musical ni micro.
-
-**Écouter** lit volontairement le conte avec la synthèse du navigateur. Le rendu
-dépend des voix installées ; une voix française locale permet l’écoute hors ligne.
-Les noms et états des émojis sont accessibles au clavier et aux lecteurs d’écran.
-Leur apparence varie selon le système.
+Une ambiance Web Audio commence lors de la génération selon l’émoji choisi.
+**Musique** coupe ou reprend le son. Le guide permet de régler le volume.
+**Écouter** lit la métaphore, son lien clinique et les deux questions avec la voix
+du navigateur ; la musique s’abaisse pendant cette lecture. La qualité dépend des
+voix installées. Une voix locale est nécessaire pour une lecture vocale hors ligne.
 
 Aucun formulaire clinique, compte, historique de situations, cookie applicatif,
-localStorage ou analyse d’audience. Les textes sont composés localement.
+localStorage ou analyse d’audience. Les choix restent en mémoire pendant la visite.
 La synthèse vocale distante du système, si utilisée, ne reçoit que le texte public.
 
 ## PWA et déploiement
 
-Le build précache les ressources. Le guide indique **Disponible hors ligne**
-après installation du cache. La version de développement n’enregistre pas de
+Le build précache les ressources. La version de développement n’enregistre pas de
 service worker. Les caches peuvent être supprimés par le navigateur.
+
+`dist/` est un site statique autonome à servir en HTTPS ou sur localhost, à la
+racine ou dans un sous-répertoire. Il ne se lance pas en `file://`.
 
 Vercel : importer `pierkiroule/resostep`, racine du dépôt, Node.js 24.x,
 installation `npm ci`, construction `npm run check && npm run build && npm run check:pwa`,
-sortie `dist`, aucune variable d’environnement. `vercel.json` conserve les règles
-et paramètres de déploiement.
+sortie `dist`, aucune variable d’environnement.
 
-Restent des essais manuels sur matériel réel : installation Android et mode avion,
-lecteur d’écran, voix française et écoute subjective. Aucune validation clinique
-n’est revendiquée.
+Restent des essais sur matériel réel : installation et mode avion, lecteur d’écran,
+voix française, écoute et fluidité des animations. Aucune validation clinique n’est
+revendiquée.
