@@ -69,3 +69,22 @@
   .selection-bloom, .selection-bloom *, .has-choices .bubble-disk { animation: none !important; transition: none; }
   .selection-ripple, .selection-spark { display: none; }
 }
+
+/* Les tags émergent au cœur du disque après le choix d’une image. */
+.has-choices .bubble-disk { inset: 19%; }
+.disk-tags { position: absolute; z-index: 4; top: 50%; left: 50%; width: 48%; transform: translate(-50%, -50%); text-align: center; animation: tags-emerge .6s .12s ease both; }
+.disk-tags > p { margin: 0 0 9px; font-size: 13px; font-weight: 500; line-height: 1.3; color: #3c5848; text-shadow: 0 0 8px #fff; }
+.disk-tag-options { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px; }
+.disk-tag { position: relative; display: block; min-width: 0; cursor: pointer; }
+.disk-tag input { position: absolute; inset: 0; opacity: 0; width: 100%; height: 100%; margin: 0; cursor: pointer; }
+.disk-tag > span { display: flex; align-items: center; justify-content: center; min-height: 44px; padding: 7px 8px; border: 1px solid #fff; border-radius: 24px; background: #ffffffe6; box-shadow: 0 2px 8px #44604b0b; color: #435a45; font-size: 13px; line-height: 1.15; transition: background .2s, border-color .2s; }
+.disk-tag:hover > span { border-color: #8fa184; background: #fff; }
+.disk-tag input:checked + span { border-color: #3e653c; background: #345936; color: #fff; box-shadow: 0 0 0 2px #ffffffb3; }
+.disk-tag input:focus-visible + span { outline: 2px solid #233e28; outline-offset: 3px; }
+.open-tag > span { font-style: italic; }
+.exploration-selection { margin: 12px 0 0 !important; font-size: 12px !important; color: #52694c; }
+.result-exploration { display: inline-block; margin: 10px auto 0; padding: 5px 12px; border: 1px solid #dce5d6; border-radius: 24px; font-size: 12px; color: #4f6749; }
+@keyframes tags-emerge { from { opacity: 0; transform: translate(-50%, -44%) scale(.94); } to { opacity: 1; transform: translate(-50%, -50%) scale(1); } }
+@media(max-width:700px) { .disk-tags > p { font-size: 12px; margin-bottom: 6px; } .disk-tag-options { gap: 6px; } .disk-tag > span { min-height: 36px; padding: 6px 3px; font-size: 12px; } }
+@media(max-width:350px) { .disk-tags > p { font-size: 11px; margin-bottom: 4px; } .disk-tag-options { gap: 4px; } .disk-tag > span { min-height: 36px; padding: 4px 2px; font-size: 11px; } }
+@media(prefers-reduced-motion: reduce) { .disk-tags { animation: none; } .disk-tag > span { transition: none; } }
