@@ -1,0 +1,71 @@
+.emoji-picker { padding: 24px 0 0; max-width: 660px; border: 0; background: none; }
+.picker-heading, #picker-hint { max-width: 560px; margin-left: auto; margin-right: auto; }
+.emoji-orbit { position: relative; width: min(100%, 560px); aspect-ratio: 1; margin: 20px auto; isolation: isolate; }
+.emoji-orbit::before { content: ''; position: absolute; inset: 8.6%; border: 1px solid #cbd8cf; border-radius: 50%; box-shadow: 0 0 45px #cadbcd24; }
+.orbit-choices { position: absolute; inset: 0; }
+.emoji-orbit .emoji-choice { position: absolute; width: clamp(44px, 11vw, 64px); height: clamp(44px, 11vw, 64px); min-height: 0; padding: 0; gap: 0; border: 2px solid transparent; border-radius: 50%; background: #fff; transform: translate(-50%, -50%); z-index: 2; }
+.emoji-orbit .emoji-choice:hover { border-color: #bbcdb9; background: #f2f7ee; }
+.emoji-orbit .emoji-choice.is-selected { border-color: #3e653c; background: #e6f0df; box-shadow: 0 0 0 4px #fff, 0 0 0 6px #cfdfc7; }
+.emoji-orbit .emoji-picture { font-size: clamp(25px, 6.5vw, 35px); }
+.emoji-orbit .emoji-check { top: -6px; right: -5px; padding: 3px 5px; font-size: 10px; }
+.orbit-name { position: absolute; top: calc(100% + 8px); left: 50%; transform: translateX(-50%); border: 1px solid #e1e8dc; border-radius: 8px; background: #fffffff5; padding: 5px 8px; color: #344d35; font-size: 11px; white-space: nowrap; pointer-events: none; opacity: 0; z-index: 5; }
+.emoji-choice:focus-visible .orbit-name { opacity: 1; }
+@media(hover: hover) { .emoji-choice:hover .orbit-name { opacity: 1; } }
+.emoji-choice:nth-child(3n + 2) .orbit-name, .emoji-choice:nth-child(3n + 3) .orbit-name { top: auto; bottom: calc(100% + 8px); }
+.bubble-disk { position: absolute; inset: 20%; border-radius: 50%; overflow: hidden; background: radial-gradient(ellipse at 25% 22%, #fff 0%, #e6f2ed99 35%, #e9e5f46b 62%, #f1eadf66 80%, #fff 100%); border: 1px solid #dce9e2; box-shadow: inset 0 0 35px #ffffffef, 0 0 45px #d5e6db3d; }
+.has-choices .bubble-disk { background: radial-gradient(ellipse at 25% 22%, #fff 0%, #d8eee5ae 35%, #e5dcf3a1 62%, #f1e3ce8c 80%, #fff 100%); }
+.bubble-field { position: absolute; inset: 0; }
+.disk-bubble { position: absolute; left: var(--bubble-left); top: var(--bubble-top); width: var(--bubble-size); aspect-ratio: 1; border: 1px solid #ffffffde; border-radius: 50%; background: radial-gradient(circle at 30% 25%, #fff 0%, #ffffffb8 5%, #ffffff00 28%), radial-gradient(circle at 65% 72%, #d8c6ec69, #b8ded34f 50%, #ffffff12 70%); box-shadow: inset 2px 2px 6px #fff, inset -2px -3px 7px #a4c9c35e, 0 3px 9px #a1b9b51f; opacity: .75; animation: disk-bubble-float var(--bubble-duration) ease-in-out var(--bubble-delay) infinite alternate; will-change: transform; }
+.disk-bubble:nth-child(3n) { border-color: #dccde983; filter: blur(.4px); }
+.disk-bubble:nth-child(4n) { border-color: #c9ddd6ac; }
+.bubble-center { position: absolute; inset: 0; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 8px; text-align: center; font: italic clamp(14px, 3.5vw, 23px)/1.4 var(--serif); color: #486557; text-shadow: 0 1px 5px #fff, 0 0 15px #fff; }
+.bubble-sign { font: normal clamp(20px, 4vw, 30px)/1 var(--serif); color: #729d91; }
+@keyframes disk-bubble-float { from { transform: translate(-5px, 7px) scale(.83); opacity: .45; } to { transform: translate(var(--bubble-drift), -22px) scale(1.12); opacity: .9; } }
+@media(max-width:700px) {
+  .picker-heading { gap: 10px; }
+  .picker-heading h2 { font-size: 23px; }
+  .emoji-orbit { margin: 15px auto 20px; }
+  .emoji-choice:nth-child(3) .orbit-name, .emoji-choice:nth-child(4) .orbit-name, .emoji-choice:nth-child(5) .orbit-name { left: auto; right: 0; transform: none; }
+  .emoji-choice:nth-child(9) .orbit-name, .emoji-choice:nth-child(10) .orbit-name, .emoji-choice:nth-child(11) .orbit-name { left: 0; transform: none; }
+}
+@media(prefers-reduced-motion: reduce) { .disk-bubble { animation: none; will-change: auto; } }
+
+/* Une métaphore, un lien avec la pratique et deux questions. */
+.metaphor-reading { padding-top: 28px; border-top: 0; }
+.metaphor-reading .reading-header h2 { font: 400 clamp(28px, 4vw, 38px)/1.3 var(--serif); letter-spacing: -.02em; text-wrap: balance; max-width: 620px; margin: 14px auto; }
+.metaphor-reading .reading-emojis { font-size: 34px; margin-bottom: 18px; }
+.metaphor-reading .voice-player { margin-bottom: 20px; }
+.metaphor-text { font: 400 23px/1.8 var(--serif); color: #365b49; margin: 0 0 28px; padding: 0 0 0 22px; border-left: 2px solid #b7cbbb; }
+.metaphor-link { padding: 18px 22px; background: #f4f7f0; border-radius: 12px; }
+.metaphor-link h3, .metaphor-questions > h3 { margin: 0 0 8px; font-size: 13px; font-weight: 600; color: #415c40; }
+.metaphor-link p { margin: 0; font-size: 15px; line-height: 1.8; color: #334137; }
+.metaphor-questions { margin-top: 28px; }
+.intervision-questions { list-style: none; padding: 0; margin: 18px 0 0; }
+.intervision-questions li { border-top: 1px solid #d6e0d0; padding-top: 16px; }
+.intervision-questions li + li { margin-top: 20px; }
+.question-label { font-size: 11px; font-weight: 600; color: #536950; }
+.intervision-questions li p { font: 400 21px/1.65 var(--serif); color: #293e2e; margin: 8px 0 0; }
+@media(max-width:700px) { .metaphor-text { font-size: 21px; padding-left: 16px; } .metaphor-link { padding: 16px; } .intervision-questions li p { font-size: 20px; } }
+@media print { .metaphor-text { font-size: 12pt; } .metaphor-link { background: none; padding: 0; } .intervision-questions li { break-inside: avoid; } }
+
+/* À chaque choix, une éclosion de pigments, de lumière et d’ondes dans le disque. */
+.selection-bloom { position: absolute; inset: 0; border-radius: 50%; overflow: hidden; animation: selection-awaken 1.8s ease-out both; }
+.pigment-cloud { position: absolute; width: 85%; height: 85%; border-radius: 42% 58% 64% 36%; filter: blur(15px) saturate(1.5); opacity: .48; }
+.cloud-a { top: -12%; left: -15%; background: radial-gradient(ellipse, var(--disk-color-a), transparent 70%); animation: pigment-drift 12s ease-in-out infinite alternate; }
+.cloud-b { right: -14%; bottom: -12%; background: radial-gradient(ellipse, var(--disk-color-b), transparent 70%); animation: pigment-drift 15s ease-in-out -5s infinite alternate-reverse; }
+.light-ribbon { position: absolute; inset: 8%; border-radius: 50%; background: conic-gradient(from 20deg, transparent 5%, #fff9 15%, var(--disk-color-c) 25%, transparent 36%, #fff8 60%, var(--disk-color-a) 72%, transparent 85%); mask: radial-gradient(ellipse, transparent 46%, #000 54%, #000 57%, transparent 67%); opacity: .65; animation: ribbon-turn 20s linear infinite; }
+.selection-ripple { position: absolute; inset: 25%; border: 1px solid #ffffffdb; border-radius: 50%; box-shadow: 0 0 12px #fff8, inset 0 0 10px #fff5; animation: selection-wave 2.2s ease-out both; }
+.selection-spark { position: absolute; top: 50%; left: 50%; width: 3px; height: 3px; border-radius: 50%; background: #fff; box-shadow: 0 0 8px 2px #fff9; animation: spark-unfold 2.1s ease-out both; }
+.has-choices .bubble-disk { box-shadow: inset 0 0 32px #fffffff0, 0 0 30px color-mix(in srgb, var(--disk-color-a) 20%, transparent), 0 0 65px color-mix(in srgb, var(--disk-color-b) 12%, transparent); transition: box-shadow 1s; }
+.has-choices .disk-bubble { border-color: #fffe; box-shadow: inset 2px 2px 7px #fff, inset -2px -3px 8px color-mix(in srgb, var(--disk-color-a) 28%, transparent), 0 3px 12px #a1b9b526; }
+.bubble-center { pointer-events: none; }
+.has-choices .bubble-center { text-shadow: 0 0 5px #fff, 0 0 12px #fff, 0 0 24px #fff; }
+@keyframes selection-awaken { from { opacity: 0; transform: scale(.7); } to { opacity: 1; transform: scale(1); } }
+@keyframes pigment-drift { from { transform: translate(-5%, -8%) rotate(-20deg) scale(.9); } to { transform: translate(12%, 14%) rotate(35deg) scale(1.3); } }
+@keyframes ribbon-turn { to { transform: rotate(360deg); } }
+@keyframes selection-wave { from { transform: scale(.25); opacity: 0; } 20% { opacity: .85; } to { transform: scale(2.1); opacity: 0; } }
+@keyframes spark-unfold { from { transform: translate(0, 0) scale(0); opacity: 0; } 20% { opacity: .9; } to { transform: translate(var(--spark-x), var(--spark-y)) scale(.2); opacity: 0; } }
+@media(prefers-reduced-motion: reduce) {
+  .selection-bloom, .selection-bloom *, .has-choices .bubble-disk { animation: none !important; transition: none; }
+  .selection-ripple, .selection-spark { display: none; }
+}
