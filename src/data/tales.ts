@@ -23,10 +23,10 @@ export interface TaleInspiration {
 }
 
 const invitations = [
-  'Racontez quelques lignes depuis la place de quelqu’un qui n’a pas encore parlé. Que remarque-t-il, sans résoudre l’histoire ?',
-  'Arrêtez le conte juste avant le dernier geste. Quelle autre suite devient imaginable depuis une autre place ?',
-  'Donnez une voix à un détail resté dans le paysage. Que sait-il de l’histoire que la gardienne ignore encore ?',
-  'Reprenez le conte au lendemain de cette scène. Qu’est-ce qui a changé, et qu’est-ce qui continue de demander de l’attention ?',
+  'Racontez la scène du point de vue d’une personne restée silencieuse.',
+  'Arrêtez le conte avant le dernier geste. Quelle autre suite imaginez-vous ?',
+  'Faites parler un détail du paysage. Que remarque-t-il ?',
+  'Reprenez le conte le lendemain. Qu’est-ce qui a changé ?',
 ];
 
 /** Une scène, une tension, des rencontres qui la déplacent et un retour à la même scène. */
