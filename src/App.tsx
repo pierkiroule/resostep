@@ -11,8 +11,6 @@ export default function App() {
   const [selected, setSelected] = useState<Archetype[]>([]);
   const [inspiration, setInspiration] = useState<TaleInspiration | null>(null);
   const recent = useRef<string[]>([]);
-  const [collective, setCollective] = useState(false);
-  const [textOnly, setTextOnly] = useState(false);
   const [message, setMessage] = useState('');
   const [offline, setOffline] = useState(!navigator.onLine);
   const [cached, setCached] = useState(false);
@@ -66,7 +64,7 @@ export default function App() {
     document.querySelector<HTMLButtonElement>('.emoji-choice.is-selected, .emoji-choice')?.focus({ preventScroll: true });
   }
 
-  return <div className={`app ${collective ? 'collective-mode' : ''} ${textOnly ? 'text-mode' : ''}`}>
+  return <div className="app">
     <a className="skip-link" href="#disque">Aller au choix des émojis</a>
     <header className="site-header"><a href="#disque" className="brand" aria-label="Aller au choix des émojis">•°</a><div className="header-actions">
       {inspiration && <button type="button" className={`music-button ${music.active ? 'is-playing' : ''}`} onClick={music.toggle} aria-pressed={music.active} aria-label={music.active ? 'Couper la musique' : 'Activer la musique'}><UiIcon name="music" /><span>Musique</span></button>}
@@ -74,7 +72,6 @@ export default function App() {
     </div></header>
     <main>
       <section className="introduction" aria-labelledby="app-title"><p className="eyebrow">Un générateur pour l’intervision résonante</p><h1 id="app-title">La minute d’<em>Intervision Résonante</em><span className="app-subtitle">Le pas de côté métaphorique qui inspire<span aria-hidden="true">•°</span></span></h1><p className="journey-intro">Une situation à l’esprit. De 1 à 3 émojis.<br />Un autre regard et une histoire à inventer ensemble.</p></section>
-      <div className="reading-comfort" role="group" aria-label="Confort de lecture"><button type="button" className="comfort-button" aria-pressed={collective} onClick={() => setCollective(value => !value)}><UiIcon name="type" />Grands caractères</button><button type="button" className="comfort-button" aria-pressed={textOnly} onClick={() => setTextOnly(value => !value)}><UiIcon name="text" />Sans animation</button></div>
       <ResonanceDisk selected={selected} onToggle={toggleEmoji} onGenerate={() => generate()} onClear={() => { setSelected([]); setMessage('Sélection effacée. Choisissez de 1 à 3 émojis.'); }} message={message} />
       {inspiration && selected.map(item => item.id).join() !== inspiration.archetypes.map(item => item.id).join() && <p className="selection-update" role="status">Votre sélection a changé. Générez une nouvelle piste pour l’utiliser ; le texte ci-dessous conserve ses émojis d’origine.</p>}
       <section id="lecture" className="reading-region" aria-label="Le pas de côté et le pas conté">{inspiration && <ArchetypeReading key={inspiration.id} inspiration={inspiration} onReturn={returnToPicker} onRenew={() => generate(inspiration.archetypes)} onSpeaking={music.setSpeaking} />}</section>
@@ -86,7 +83,7 @@ export default function App() {
       <ol className="ritual-steps"><li><strong>Évoquer.</strong> Partagez une situation à l’oral, sans la saisir ici.</li><li><strong>Choisir.</strong> Retenez de 1 à 3 émojis. Touchez un émoji sélectionné pour le retirer.</li><li><strong>Se décaler.</strong> Le pas de côté propose un regard et des questions pour l’équipe.</li><li><strong>Conter.</strong> Le pas conté suggère deux titres et une trame à prolonger. Les images choisies habitent le même paysage.</li><li><strong>Revenir.</strong> Qu’est-ce que cette histoire change dans notre façon de raconter la situation ?</li></ol>
       <p className="help-boundary">Aucun émoji ne représente automatiquement une personne. Les métaphores peuvent être déplacées, discutées ou écartées. Elles ne posent pas de diagnostic et ne recommandent aucune conduite thérapeutique.</p>
       <details className="help-details"><summary>Comment les récits sont-ils composés ?</summary><p>Le générateur fonctionne sur l’appareil à partir de motifs écrits. Il les réunit dans une trame commune et varie le cadre, les titres et la fin. Il ne connaît pas la situation clinique et n’en propose aucune analyse. La variété est finie ; l’équipe invente la suite.</p></details>
-      <details className="help-details"><summary>Lecture et ambiance sonore</summary><p>Les réglages de lecture se trouvent au-dessus des émojis. Une ambiance musicale commence lors de la génération, inspirée du premier émoji choisi. Le bouton Musique coupe ou reprend le son ; la lecture vocale en diminue le volume.</p><label className="volume-control" htmlFor="music-volume"><span>Volume musical <output>{Math.round(music.volume * 100)} %</output></span><input id="music-volume" type="range" min="0" max="100" value={Math.round(music.volume * 100)} onChange={event => music.changeVolume(Number(event.target.value) / 100)} /></label></details>
+      <details className="help-details"><summary>Lecture et ambiance sonore</summary><p>Une ambiance musicale commence lors de la génération, inspirée du premier émoji choisi. Le bouton Musique coupe ou reprend le son ; la lecture vocale en diminue le volume.</p><label className="volume-control" htmlFor="music-volume"><span>Volume musical <output>{Math.round(music.volume * 100)} %</output></span><input id="music-volume" type="range" min="0" max="100" value={Math.round(music.volume * 100)} onChange={event => music.changeVolume(Number(event.target.value) / 100)} /></label></details>
       {(offline || cached) && <p className="offline-indicator" role="status">{offline ? 'Hors ligne' : 'Disponible hors ligne'}</p>}
       <button type="button" className="dialog-done" onClick={() => help.current?.close()}>Choisir mes émojis <span aria-hidden="true">→</span></button>
     </div></dialog>

@@ -4,6 +4,7 @@ import App from './App';
 import './styles/theme.css';
 import './styles/scenes.css';
 import './styles/emergence.css';
+import './styles/emoji-disk.css';
 
 createRoot(document.getElementById('root')!).render(<StrictMode><App /></StrictMode>);
 

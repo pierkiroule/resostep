@@ -42,7 +42,7 @@ la navigation et les ressources hors ligne en simulation.
 
 ## Parcours
 
-1. Choisir entre un et trois émojis. Les cartes sélectionnées sont colorées,
+1. Choisir entre un et trois émojis. Les émojis sont disposés en cercle autour d’un disque de bulles animées. Les boutons sélectionnés sont colorés,
    cochées et numérotées. La sélection est aussi affichée sous la grille.
 2. Retoucher une carte ou sa pastille pour la retirer ; **Tout effacer** repart de zéro.
    Un quatrième choix ne remplace aucun choix existant.
@@ -54,7 +54,8 @@ la navigation et les ressources hors ligne en simulation.
 Une sélection modifiée ne change pas silencieusement le texte déjà affiché :
 un message invite à générer une nouvelle piste. Le récit garde ses émojis d’origine.
 
-**Grands caractères** et **Sans animation** sont accessibles avant le sélecteur.
+Les bulles sont animées en CSS, sans scène SVG dans le disque. La préférence
+système de réduction des mouvements affiche une composition fixe.
 Le guide détaille le rituel et permet de régler le volume musical. Échap ferme
 le guide. Les préférences et sélections restent en mémoire pendant la visite.
 
