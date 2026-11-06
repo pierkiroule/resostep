@@ -61,7 +61,9 @@ export default function App() {
 
   function returnToPicker() {
     document.getElementById('disque')?.scrollIntoView({ behavior: 'instant', block: 'start' });
-    document.querySelector<HTMLButtonElement>('.emoji-choice.is-selected, .emoji-choice')?.focus({ preventScroll: true });
+    const choice = document.querySelector<HTMLButtonElement>('.emoji-choice.is-selected')
+      ?? document.querySelector<HTMLButtonElement>('.emoji-choice');
+    choice?.focus({ preventScroll: true });
   }
 
   return <div className="app">
@@ -80,9 +82,9 @@ export default function App() {
     </main>
     <dialog ref={help} className="help-dialog" aria-labelledby="help-title" onClick={event => { if (event.target === event.currentTarget) help.current?.close(); }}><div className="help-dialog-inner">
       <button type="button" className="dialog-close" onClick={() => help.current?.close()} aria-label="Fermer le guide"><UiIcon name="close" /></button><p className="eyebrow">À votre rythme</p><h2 id="help-title">Un pas de côté, un pas conté.</h2>
-      <ol className="ritual-steps"><li><strong>Évoquer.</strong> Partagez une situation à l’oral, sans la saisir ici.</li><li><strong>Choisir.</strong> Retenez de 1 à 3 émojis. Touchez un émoji sélectionné pour le retirer.</li><li><strong>Se décaler.</strong> Le pas de côté propose un regard et des questions pour l’équipe.</li><li><strong>Conter.</strong> Le pas conté suggère deux titres et une trame à prolonger. Les images choisies habitent le même paysage.</li><li><strong>Revenir.</strong> Qu’est-ce que cette histoire change dans notre façon de raconter la situation ?</li></ol>
+      <ol className="ritual-steps"><li><strong>Évoquer.</strong> Partagez une situation à l’oral, sans la saisir ici.</li><li><strong>Choisir.</strong> Retenez de 1 à 3 émojis. Touchez un émoji sélectionné pour le retirer.</li><li><strong>Rencontrer.</strong> Lisez le pas conté : une scène, une tension et une fin ouverte. Le premier émoji donne le fil du récit ; les autres y font revenir des scènes en mémoire.</li><li><strong>Se décaler.</strong> Deux questions ouvrent l’intervision : ce que la situation nous fait vivre et ce qui reste à entendre. Un autre titre et une invitation à prolonger le conte sont disponibles sous le récit.</li><li><strong>Revenir.</strong> Qu’est-ce que cette histoire change dans notre façon de raconter la situation ?</li></ol>
       <p className="help-boundary">Aucun émoji ne représente automatiquement une personne. Les métaphores peuvent être déplacées, discutées ou écartées. Elles ne posent pas de diagnostic et ne recommandent aucune conduite thérapeutique.</p>
-      <details className="help-details"><summary>Comment les récits sont-ils composés ?</summary><p>Le générateur fonctionne sur l’appareil à partir de motifs écrits. Il les réunit dans une trame commune et varie le cadre, les titres et la fin. Il ne connaît pas la situation clinique et n’en propose aucune analyse. La variété est finie ; l’équipe invente la suite.</p></details>
+      <details className="help-details"><summary>Comment les récits sont-ils composés ?</summary><p>Le générateur fonctionne sur l’appareil à partir de 24 scènes écrites et de fins liées à chacune. Les images supplémentaires reviennent comme des souvenirs et déplacent le regard de la gardienne dans sa scène de départ. Chaque sélection possède huit variantes, rencontrées avant un nouveau cycle. Il ne connaît pas la situation clinique et n’en propose aucune analyse. La variété est finie ; l’équipe invente la suite.</p></details>
       <details className="help-details"><summary>Lecture et ambiance sonore</summary><p>Une ambiance musicale commence lors de la génération, inspirée du premier émoji choisi. Le bouton Musique coupe ou reprend le son ; la lecture vocale en diminue le volume.</p><label className="volume-control" htmlFor="music-volume"><span>Volume musical <output>{Math.round(music.volume * 100)} %</output></span><input id="music-volume" type="range" min="0" max="100" value={Math.round(music.volume * 100)} onChange={event => music.changeVolume(Number(event.target.value) / 100)} /></label></details>
       {(offline || cached) && <p className="offline-indicator" role="status">{offline ? 'Hors ligne' : 'Disponible hors ligne'}</p>}
       <button type="button" className="dialog-done" onClick={() => help.current?.close()}>Choisir mes émojis <span aria-hidden="true">→</span></button>

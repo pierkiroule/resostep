@@ -29,3 +29,44 @@
   .emoji-choice:nth-child(9) .orbit-name, .emoji-choice:nth-child(10) .orbit-name, .emoji-choice:nth-child(11) .orbit-name { left: 0; transform: none; }
 }
 @media(prefers-reduced-motion: reduce) { .disk-bubble { animation: none; will-change: auto; } }
+
+/* Une histoire lisible, puis deux portes d’entrée pour la conversation. */
+.tale-reading { max-width: 700px; padding-top: 28px; border-top: 0; }
+.tale-reading .tale-step { padding: 0; margin-top: 0; border: 0; }
+.tale-reading .reading-header { padding: 0 10px; }
+.tale-reading .reading-emojis { gap: 12px; font-size: 29px; margin-bottom: 22px; }
+.tale-reading .reading-header h2 { font: 400 clamp(30px, 4vw, 43px)/1.2 var(--serif); letter-spacing: -.025em; text-wrap: balance; max-width: 620px; margin: 14px auto; }
+.reading-duration { font-size: 12px; color: #667167; line-height: 1.7; margin: 0 0 5px; }
+.tale-reading .voice-player { margin-bottom: 28px; }
+.tale-prose { max-width: 60ch; margin: 0 auto; font: 400 21px/1.85 var(--serif); color: #303c35; overflow-wrap: break-word; }
+.tale-prose p { margin: 0; orphans: 3; widows: 3; }
+.tale-prose p + p { margin-top: 1.25em; }
+.tale-prose p:first-child { color: #3f6050; }
+.tale-prose .tale-ending { border-left: 2px solid #b7cbbb; padding-left: 22px; font-style: italic; margin-top: 1.5em; }
+.story-workshop { max-width: 60ch; margin: 28px auto 0; border-top: 1px solid #dfe6dc; border-bottom: 1px solid #dfe6dc; color: #536254; font-size: 13px; line-height: 1.8; }
+.story-workshop summary { cursor: pointer; padding: 14px 0; min-height: 48px; }
+.story-workshop p { margin: 0 0 16px; }
+.story-workshop strong { font-weight: 600; }
+.tale-reading .side-step { margin-top: 38px; padding: 28px; }
+.tale-reading .side-step h3 { font-size: 29px; line-height: 1.3; text-wrap: balance; }
+.intervision-questions { list-style: none; padding: 0; margin: 26px 0 0; }
+.intervision-questions li { border-top: 1px solid #d6e0d0; padding-top: 18px; }
+.intervision-questions li + li { margin-top: 22px; }
+.question-label { display: block; font-size: 11px; font-weight: 600; letter-spacing: .02em; color: #536950; }
+.intervision-questions li p { font: 400 21px/1.65 var(--serif); margin: 8px 0 0; color: #293e2e; }
+.return-to-situation { margin-top: 26px; border-top: 1px solid #d6e0d0; padding-top: 18px; }
+.return-to-situation h4 { font-size: 12px; font-weight: 600; margin: 0 0 8px; color: #415c40; }
+.return-to-situation p { margin: 0; font-size: 14px; line-height: 1.8; }
+@media(max-width:700px) {
+  .tale-prose { font-size: 20px; line-height: 1.8; }
+  .tale-reading .side-step { padding: 22px 18px; }
+  .tale-reading .side-step h3 { font-size: 26px; }
+  .intervision-questions li p { font-size: 20px; }
+  .tale-prose .tale-ending { padding-left: 16px; }
+}
+@media print {
+  .story-workshop, .reading-duration, .reading-boundary { display: none; }
+  .tale-reading .side-step { padding: 0; border: 0; }
+  .tale-prose { font-size: 12pt; max-width: none; }
+  .intervision-questions li, .return-to-situation { break-inside: avoid; }
+}

@@ -9,8 +9,10 @@ résonante. Une équipe évoque oralement une situation clinique, choisit **de 1
 - **Le pas de côté** : une hypothèse de regard et des questions pour déplacer le récit.
 - **Le pas conté** : deux titres possibles, une trame de conte et une invitation à inventer la suite.
 
-Les images retenues se rencontrent dans un même village au bord d’un fleuve.
-Chaque motif apporte un obstacle et un déplacement ; la fin reste ouverte.
+Les images retenues se rencontrent autour d’un passage au bord de l’eau.
+Le premier émoji porte le fil narratif ; les autres font revenir des scènes en
+mémoire qui déplacent le regard de la gardienne, sans quitter la scène de départ.
+La fin reste ouverte.
 Aucun émoji ne reçoit automatiquement le rôle d’un jeune, d’un proche ou d’un soignant.
 Les métaphores se discutent, se prolongent ou s’écartent. Elles ne posent pas de
 diagnostic et ne recommandent aucune conduite thérapeutique.
@@ -33,8 +35,9 @@ npm run preview
 
 `check` vérifie TypeScript, les ressources éditoriales, les partitions et les
 **298 combinaisons** de 1 à 3 émojis avec huit variantes chacune. Les tests
-contrôlent la contribution de chaque image, les titres, les questions, les bornes
-de sélection et la reproductibilité. `check:pwa` teste le service worker généré,
+contrôlent la contribution de chaque image, le lien entre le titre, la scène et sa
+fin, les deux questions distinctes, les bornes de sélection, la longueur des récits
+et la reproductibilité. Les cycles sont indépendants pour chaque sélection. `check:pwa` teste le service worker généré,
 la navigation et les ressources hors ligne en simulation.
 
 `dist/` est un site statique autonome, à servir en HTTPS ou sur localhost,
@@ -47,7 +50,9 @@ la navigation et les ressources hors ligne en simulation.
 2. Retoucher une carte ou sa pastille pour la retirer ; **Tout effacer** repart de zéro.
    Un quatrième choix ne remplace aucun choix existant.
 3. **Inspirer un pas de côté et un pas conté** compose la proposition et place le
-   focus clavier sur son titre. La génération est indisponible sans émoji.
+   focus clavier sur le titre du récit. La génération est indisponible sans émoji.
+   Le conte vient d’abord, puis les deux questions et un retour à la situation.
+   **Prolonger ou renommer le conte** ouvre une invitation narrative et un autre titre.
 4. **Une autre piste avec ces émojis** renouvelle les variantes avec les images
    du récit affiché. **Modifier mes émojis** ramène au sélecteur.
 
@@ -61,17 +66,28 @@ le guide. Les préférences et sélections restent en mémoire pendant la visite
 
 ## Composition et personnalisation
 
-`src/data/tales.ts` définit les émojis, les motifs narratifs, leurs déplacements
-et leurs questions. Le générateur réunit ces motifs dans une trame commune et
-varie les cadres, les titres et les fins. L’ordre des choix donne l’ordre de leurs
-rencontres. Il compose à partir de textes écrits ; la variété est finie.
-Il ne lit ni n’analyse la situation clinique évoquée par l’équipe.
+`src/data/narratives.ts` contient **24 noyaux narratifs**, 48 titres et 96 fins
+liées à leur scène. Les récits composés font de 90 à 236 mots, selon les images
+et la variante. La durée affichée est une estimation de lecture, sans compte à rebours.
 
-`src/data/resonance.ts` conserve les 96 métaphores éditoriales et fournit le cycle
-de huit variantes sans répétition, puis évite les trois dernières variantes au
-cycle suivant. `src/data/archetypes.ts` conserve les identités des douze images
-et leurs ressources longues de référence. Les anciennes scènes SVG restent
-disponibles dans les composants pour de futurs usages ; les choix utilisent des émojis.
+`src/data/clinicalLenses.ts` contient **12 regards d’intervision** : éprouvés de
+l’équipe, relations, temporalités, soutiens, transmissions, continuité famille–école–soins.
+Chaque regard fournit une hypothèse, une question sur les éprouvés, une question
+relationnelle et une invitation à revenir à un épisode concret. Ces textes
+n’assignent aucun rôle clinique aux images et ne constituent pas une validation clinique.
+
+`src/data/tales.ts` compose ces ressources : scène et tension du premier émoji,
+souvenirs liés aux images supplémentaires, retour à une fin de la même scène.
+L’ordre de sélection est conservé. Chaque sélection ordonnée a son propre cycle
+de huit variantes sans répétition ; un nouveau cycle évite ses trois dernières
+lectures, même si d’autres sélections ont été utilisées entre-temps.
+
+Le générateur utilise des textes écrits ; sa variété est finie. Il ne lit ni
+n’analyse la situation clinique évoquée par l’équipe. Les 96 métaphores de
+`src/data/resonance.ts` et les textes longs de `src/data/archetypes.ts` restent
+disponibles comme ressources éditoriales, séparées du corpus de contes affiché.
+Les anciennes scènes SVG restent disponibles dans les composants ; le disque
+actuel ne les utilise pas.
 
 ## Son, accessibilité et données
 

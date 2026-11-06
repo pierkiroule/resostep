@@ -1,25 +1,11 @@
 import type { Archetype, ArchetypeId } from './archetypes';
-import { makeInspiration, seededRandom } from './resonance';
+import { seededRandom } from './resonance';
+import { narratives } from './narratives';
+import { clinicalLenses } from './clinicalLenses';
 
 export const emojiSymbols: Record<ArchetypeId, string> = {
   noeud: '🪢', barque: '⛵', roseau: '🌾', mycelium: '🍄', graine: '🌱', cage: '🕊️',
   phare: '🔦', riviere: '🌊', cercles: '🫧', fissure: '⚡', plume: '🪶', pierres: '🪨',
-};
-
-// Chaque motif intervient dans le même village et transforme la même recherche de passage.
-const motifs: Record<ArchetypeId, { name: string; encounter: string; shift: string; question: string }> = {
-  noeud: { name: 'le nœud', encounter: 'Une corde nouée retient la passerelle. Plus les habitants tirent ensemble, plus le nœud se serre.', shift: 'Une main cesse de tirer : entre les fils, une petite boucle redevient accessible.', question: 'Quels efforts se renforcent entre nous au point de resserrer ce que nous cherchons à ouvrir ?' },
-  barque: { name: 'la barque', encounter: 'Une barque attend au bord. Ses passagers rament avec ardeur, mais chacun vise un autre point de la rive.', shift: 'Les rames se reposent un instant. Depuis la berge, quelqu’un montre un débarcadère que personne à bord ne voyait.', question: 'Quelles destinations différentes orientent nos efforts dans cette situation ?' },
-  roseau: { name: 'le roseau', encounter: 'Un roseau s’incline au bord du passage. Les habitants le croient fragile parce qu’il ne reste jamais droit.', shift: 'En suivant sa courbe, ils découvrent la direction d’un vent qu’ils ne sentaient pas depuis leur abri.', question: 'Quel mouvement prenons-nous pour une faiblesse alors qu’il pourrait nous renseigner sur le contexte ?' },
-  mycelium: { name: 'le mycélium', encounter: 'Sous les feuilles, un mycélium relie les arbres du chemin. Rien, à la surface, ne montre ces échanges.', shift: 'En écartant doucement les feuilles, les habitants repèrent des liens qui passent autour de l’obstacle.', question: 'Quels liens discrets soutiennent déjà cette situation sans apparaître dans notre récit ?' },
-  graine: { name: 'la graine', encounter: 'Près du passage, une graine reste invisible sous terre. Chaque matin, quelqu’un veut la déterrer pour vérifier si elle avance.', shift: 'Une jardinière laisse un repère sur le sol. On peut désormais veiller sur cet endroit sans déplacer la terre.', question: 'Comment notre besoin de voir un résultat modifie-t-il les conditions de ce qui se prépare ?' },
-  cage: { name: 'la cage ouverte', encounter: 'Une cage ouverte est posée près du chemin. L’oiseau reste sur son perchoir, malgré les encouragements à sortir.', shift: 'Un enfant rapproche une branche de la porte. L’ouverture possède maintenant un premier appui, mais l’oiseau choisira son moment.', question: 'Quel premier appui manque peut-être derrière une possibilité que nous disons déjà ouverte ?' },
-  phare: { name: 'le phare', encounter: 'Le phare du village éclaire toujours le même rocher. Les habitants finissent par ne plus raconter que ce rocher.', shift: 'La gardienne tourne légèrement la lampe. Un petit quai apparaît au bord du faisceau ; le rocher est toujours là.', question: 'Qu’est-ce qui reste hors de notre champ lorsque nous éclairons toujours la même difficulté ?' },
-  riviere: { name: 'la rivière', encounter: 'La rivière longe le chemin. On voudrait la rendre droite, mais chaque pierre déplacée crée un remous ailleurs.', shift: 'Les habitants remontent quelques pas vers la source et découvrent deux courants qui se rencontrent avant l’obstacle.', question: 'Quel enchaînement en amont devient invisible quand nous nous concentrons sur le seul remous ?' },
-  cercles: { name: 'les deux cercles', encounter: 'Deux cercles sont tracés dans le sable : celui du village et celui des voyageurs. Chacun garde ses provisions de son côté.', shift: 'La pluie efface un peu les bords. Dans leur espace commun, on pose une première planche sans fusionner les deux cercles.', question: 'Quel espace commun pourrions-nous imaginer sans demander à chacun d’abandonner sa place ?' },
-  fissure: { name: 'la fissure', encounter: 'Une fissure traverse le mur qui borde le chemin. Les habitants passent leur temps à la recouvrir, mais l’enduit tombe.', shift: 'En regardant à travers la fente, ils aperçoivent un jardin dont ils avaient oublié l’entrée.', question: 'Qu’est-ce qui pourrait apparaître si nous regardions aussi à travers la rupture, sans nier ce qu’elle fragilise ?' },
-  plume: { name: 'la plume', encounter: 'Une plume repose sur le chemin. Chaque voix qui dit où aller la déplace, et chacun accuse le souffle du voisin.', shift: 'Les voix baissent un instant. La plume révèle alors un courant d’air qui passe sous la porte fermée.', question: 'Quels effets de nos propres échanges n’entendons-nous plus dans cette situation ?' },
-  pierres: { name: 'les pierres', encounter: 'Trois pierres soutiennent une planche du passage. Une main les retient depuis si longtemps qu’on la confond avec le paysage.', shift: 'Les habitants regardent enfin cette main. Ils cherchent un appui supplémentaire avant de lui demander de se retirer.', question: 'Quel soutien devenu invisible risquons-nous d’oublier lorsque nous parlons d’autonomie ?' },
 };
 
 export interface TaleInspiration {
@@ -29,43 +15,69 @@ export interface TaleInspiration {
   title: string;
   alternativeTitle: string;
   paragraphs: string[];
+  sideStepTitle: string;
   sideStep: string;
-  questions: string[];
+  questions: [string, string];
   invitation: string;
+  storyInvitation: string;
 }
 
+const invitations = [
+  'Racontez quelques lignes depuis la place de quelqu’un qui n’a pas encore parlé. Que remarque-t-il, sans résoudre l’histoire ?',
+  'Arrêtez le conte juste avant le dernier geste. Quelle autre suite devient imaginable depuis une autre place ?',
+  'Donnez une voix à un détail resté dans le paysage. Que sait-il de l’histoire que la gardienne ignore encore ?',
+  'Reprenez le conte au lendemain de cette scène. Qu’est-ce qui a changé, et qu’est-ce qui continue de demander de l’attention ?',
+];
+
+/** Une scène, une tension, des rencontres qui la déplacent et un retour à la même scène. */
 export function makeTale(selected: Archetype[], recent: string[], seed: number): TaleInspiration {
-  if (selected.length < 1 || selected.length > 3 || new Set(selected.map(item => item.id)).size !== selected.length || selected.some(item => !motifs[item.id])) {
+  if (!Array.isArray(selected) || selected.length < 1 || selected.length > 3 ||
+    selected.some(item => !item || !Object.hasOwn(narratives, item.id)) ||
+    new Set(selected.map(item => item.id)).size !== selected.length) {
     throw new Error('Choisissez de 1 à 3 émojis différents.');
   }
-  const source = makeInspiration(selected[0], recent, seed);
+  if (!Number.isFinite(seed)) throw new Error('La graine du tirage doit être un nombre fini.');
   const random = seededRandom(seed);
-  const images = selected.map(item => motifs[item.id]);
-  const names = images.map(item => item.name).join(', ');
-  const openings = [
-    'Dans un village au bord d’un fleuve, les habitants cherchent comment rejoindre l’autre rive. Leur ancien passage ne ressemble plus au dessin qu’ils en avaient gardé.',
-    'Un soir de brume, des voyageurs arrivent dans un village au bord d’un fleuve. Ils demandent le bon chemin. Plusieurs habitants répondent à la fois, en montrant des directions différentes.',
-    'Après la pluie, les habitants d’un village au bord d’un fleuve veulent rouvrir leur passage. Ils ont apporté leur ancien plan, mais le paysage a changé pendant la nuit.',
-    'Au bord d’un fleuve, un village prépare un départ. Tout le monde pense avoir compris ce qui manque au passage, mais personne n’a encore fait le tour du paysage.',
-  ];
-  const endings = [
-    'Le passage n’est pas achevé. Pourtant, la carte a changé : on y dessine désormais aussi les appuis, les attentes et les places de ceux qui regardent. Qui racontera la suite depuis l’autre rive ?',
-    'Personne ne déclare le chemin trouvé. On pose le plan sur le sol et l’on invite la personne restée en retrait à y ajouter ce qu’elle voyait depuis sa place. Que dessine-t-elle ?',
-    'Le soir venu, les habitants laissent une place vide sur leur carte. Elle attend le récit de quelqu’un qui n’a pas encore parlé. Quelle rencontre pourrait déplacer leur prochain geste ?',
-    'Les habitants ne savent pas encore comment traverser. Ils savent seulement que le passage ne se raconte plus depuis un seul endroit. Où commence maintenant leur histoire ?',
-  ];
-  // L’historique du premier motif fournit huit variantes avant de recommencer.
-  const variant = Number(source.lensKey.split('-').at(-1));
-  const frame = variant % openings.length;
-  const actions = images.map((image, index) => `${index === 0 ? '' : 'Plus loin dans ce même paysage, '}${index === 0 ? image.encounter : image.encounter[0].toLocaleLowerCase('fr') + image.encounter.slice(1)} ${image.shift}`);
-  const question = images.length === 1 ? images[0].question : `Si ${names} appartenaient au même paysage, comment le mouvement de l’un changerait-il la place des autres dans notre récit de cette situation ?`;
+  // Chaque combinaison ordonnée a son propre cycle : changer une image ne consomme pas celui d’une autre.
+  const prefix = `conte:${selected.map(item => item.id).join('+')}:`;
+  const candidates = Array.from({ length: 8 }, (_, variant) => `${prefix}${variant}`);
+  const keys = new Set(candidates);
+  const history = recent.filter(key => keys.has(key));
+  const cycleLength = history.length % candidates.length;
+  const used = new Set(cycleLength ? history.slice(-cycleLength) : []);
+  const unseen = candidates.filter(key => !used.has(key));
+  const fresh = unseen.filter(key => !history.slice(-3).includes(key));
+  const pool = fresh.length ? fresh : unseen;
+  const lastVariant = history.length ? Number(history.at(-1)!.slice(prefix.length)) : -1;
+  const alternating = lastVariant < 0 ? [] : pool.filter(key =>
+    Math.floor(Number(key.slice(prefix.length)) / 4) !== Math.floor(lastVariant / 4));
+  const available = alternating.length ? alternating : pool;
+  const lensKey = available[Math.floor(random() * available.length)];
+  const variant = Number(lensKey.slice(prefix.length));
+  const coreIndex = variant < 4 ? 0 : 1;
+  const endingIndex = variant % 4;
+  const primary = selected[0].id;
+  const story = narratives[primary][coreIndex];
+  const lens = clinicalLenses[primary];
+  const encounters = selected.slice(1).map((item, index) => {
+    const echo = clinicalLenses[item.id].echoes[(variant + index) % 2];
+    // Les échos sont des souvenirs : la gardienne reste dans sa scène, même si elle est en barque ou dans le phare.
+    return `${index === 0 ? 'Avant de reprendre son geste, une scène lui revient en mémoire. ' : 'Un autre souvenir se mêle au premier. '}${echo}`;
+  });
+  const ending = `${encounters.length ? lens.returns[coreIndex] + ' ' : ''}${story.endings[endingIndex]}`;
+  // Deux questions distinctes : les éprouvés de l’équipe et une perspective relationnelle.
+  const relationalLens = selected.length > 1
+    ? clinicalLenses[selected[1 + Math.floor(random() * (selected.length - 1))].id]
+    : lens;
   return {
-    id: `${seed}-${selected.map(item => item.id).join('-')}-${variant}`, lensKey: source.lensKey, archetypes: [...selected],
-    title: `${['Le passage oublié', 'La carte inachevée', 'Le village après la pluie', 'L’autre rive'][frame]} : ${names}`,
-    alternativeTitle: `${['Ce que le plan ne disait pas', 'La place de celui qui regarde', 'Un chemin qui attend son histoire', 'Avant de traverser'][variant >= 4 ? (frame + 1) % 4 : frame]} — ${names}`,
-    paragraphs: [openings[frame], ...actions, endings[(frame + (variant >= 4 ? 1 : 0)) % endings.length]],
-    sideStep: `Et si nous racontions la situation comme un paysage de relations plutôt que depuis la seule difficulté qui attire notre regard ? ${images.length > 1 ? 'Les images choisies se rencontrent dans un même conte : aucune ne reçoit un rôle fixé à l’avance.' : 'L’image choisie ouvre une hypothèse que l’équipe peut prolonger, déplacer ou écarter.'}`,
-    questions: [question, images[Math.floor(random() * images.length)].question],
-    invitation: 'Pour prolonger le conte : changez la place du narrateur, faites entrer une voix absente et laissez la fin ouverte. Qu’est-ce que cela déplace dans notre regard clinique ?',
+    id: `${seed}-${lensKey}`, lensKey, archetypes: [...selected],
+    title: endingIndex % 2 ? story.otherTitle : story.title,
+    alternativeTitle: endingIndex % 2 ? story.title : story.otherTitle,
+    paragraphs: [story.opening, story.tension, ...encounters, ending],
+    sideStepTitle: lens.title,
+    sideStep: lens.opening,
+    questions: [lens.questions[0], relationalLens.questions[1]],
+    invitation: lens.returnToSituation,
+    storyInvitation: invitations[endingIndex],
   };
 }
