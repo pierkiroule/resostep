@@ -7,8 +7,8 @@ export function ResonanceDisk({ selected, onToggle, onGenerate, onClear, message
   selected: Archetype[]; onToggle: (item: Archetype) => void; onGenerate: () => void; onClear: () => void; message: string;
 }) {
   return <section id="disque" className="emoji-picker" aria-labelledby="picker-title">
-    <div className="picker-heading"><div><p className="eyebrow">Les images de départ</p><h2 id="picker-title">Quels émojis vous parlent ?</h2></div><span className="selection-count">{selected.length} / 3</span></div>
-    <p id="picker-hint">Choisissez de 1 à 3 émojis. Ils se rencontreront dans le même conte.</p>
+    <div className="picker-heading"><div><p className="eyebrow">Les images de départ</p><h2 id="picker-title">Choisissez les émojis qui résonnent le plus pour vous avec la situation clinique du moment</h2></div><span className="selection-count">{selected.length} / 3</span></div>
+    <p id="picker-hint">De 1 à 3 émojis. Ils se rencontreront dans le même conte.</p>
     <div className={`emoji-orbit ${selected.length ? 'has-choices' : ''}`}>
       <div className="bubble-disk" aria-hidden="true">
         <div className="bubble-field" key={selected.map(item => item.id).join('-')}>
